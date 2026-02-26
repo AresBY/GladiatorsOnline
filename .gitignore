@@ -1,0 +1,48 @@
+# Visual Studio / .NET
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Build output
+bin/
+obj/
+out/
+publish/
+
+# Rider IDE
+.idea/
+
+# VS Code
+.vscode/
+
+# NuGet
+*.nupkg
+*.snupkg
+packages/
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+# ASP.NET temporary files
+appsettings.*.json.user
+*.dbmdl
+
+# Docker
+Dockerfile
+docker-compose.override.yml
+docker-compose.local.yml
+
+# Logs
+*.log
+logs/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Others
+*.bak
+*.backup
+*.tmp
