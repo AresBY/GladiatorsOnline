@@ -10,10 +10,6 @@ namespace Gladiators.Data.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            // Сначала удаляем старую таблицу Users, если она существует
-            migrationBuilder.DropTable(
-                name: "Users");
-
             // Создаём таблицу заново с Id типа Guid
             migrationBuilder.CreateTable(
                 name: "Users",

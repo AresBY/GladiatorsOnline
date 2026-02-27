@@ -8,17 +8,30 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddCors(options =>
 {
-    options.AddDefaultPolicy(policy =>
+    options.AddPolicy("AllowUnityWebGL", policy =>
     {
-        policy.AllowAnyOrigin() // или конкретный фронтенд: "http://localhost:4200"
-              .AllowAnyHeader()
-              .AllowAnyMethod();
+        policy
+            .SetIsOriginAllowed(_ => true) // разрешить все источники
+            .AllowAnyHeader()    // разрешаем любые заголовки
+            .AllowAnyMethod();   // разрешаем любые HTTP методы
     });
 });
 
+builder.WebHost.ConfigureKestrel(options =>
+{
+    options.ListenAnyIP(5179);
+});
+
+builder.Configuration
+    .AddJsonFile("appsettings.json", optional: false)
+    .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", optional: true)
+    .AddEnvironmentVariables();
+
+var cs = builder.Configuration.GetConnectionString("DefaultConnection");
+Console.WriteLine("Using connection string: " + cs);
 
 builder.Services.AddDbContext<AppDbContext>(options =>
-options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseNpgsql(cs));
 
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IGladiatorService, GladiatorService>();
@@ -40,22 +53,30 @@ builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-// --- Автоматическое применение миграций при старте ---
-using (var scope = app.Services.CreateScope())
+try
 {
-    var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-    db.Database.Migrate(); // <--- здесь автомиграция
+    using (var scope = app.Services.CreateScope())
+    {
+        var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+        db.Database.Migrate(); // автомиграция
+        Console.WriteLine("DB connected successfully");
+    }
 }
-app.UseCors();
+catch (Exception ex)
+{
+    Console.WriteLine("DB connection error: " + ex.Message);
+}
+
+app.UseCors("AllowUnityWebGL");
 
 app.UseSwagger();
 app.UseSwaggerUI(c =>
 {
     c.SwaggerEndpoint("/swagger/v1/swagger.json", "Gladiator API V1");
-    c.RoutePrefix = string.Empty;
+    c.RoutePrefix = "swagger";
 });
 
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
 app.UseAuthorization();
 app.MapControllers();
 app.Run();

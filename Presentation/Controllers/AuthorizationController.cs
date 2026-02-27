@@ -1,5 +1,6 @@
 ﻿using Gladiators.Business.DTOs;
 using Gladiators.Business.Services.Interfaces;
+using Gladiators.Data.Entities;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Gladiators.WebApi.Controllers
@@ -23,8 +24,8 @@ namespace Gladiators.WebApi.Controllers
         {
             try
             {
-                await _authService.RegisterAsync(credentials.Username, credentials.Password);
-                return Ok("Пользователь зарегистрирован");
+                var guid = await _authService.RegisterAsync(credentials.Username, credentials.Password);
+                return Ok(guid);
             }
             catch (Exception ex)
             {
@@ -42,7 +43,21 @@ namespace Gladiators.WebApi.Controllers
             if (user == null)
                 return Unauthorized("Неверный логин или пароль");
 
-            return Ok(new { Message = "Авторизация успешна" });
+            return Ok(user);
+        }
+
+        [HttpGet("all")]
+        public async Task<ActionResult<List<User>>> GetAll()
+        {
+            var users = await _authService.GetAllAsync();
+            return Ok(users);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteUser(Guid id)
+        {
+            await _authService.DeleteUserAsync(id);
+            return NoContent(); // 204 если удаление прошло
         }
     }
 }

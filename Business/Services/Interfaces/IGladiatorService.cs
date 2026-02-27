@@ -8,6 +8,6 @@ namespace Gladiators.Business.Services.Interfaces
         Task<Gladiator?> GetByIdAsync(Guid id);
         Task AddAsync(Gladiator gladiator);
         Task UpdateAsync(Gladiator gladiator);
-        Task DeleteAsync(Gladiator gladiator);
+        Task<int> DeleteAsync(Gladiator gladiator);
     }
 }

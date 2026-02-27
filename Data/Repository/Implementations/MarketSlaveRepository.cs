@@ -13,7 +13,7 @@ namespace Gladiators.Data.Repository.Implementations
             _context = context;
         }
         public Task<List<MarketSlave>> GetAllAsync(Guid playerId) =>
-            _context.MarketSlaves.Where(s => s.PlayerId == playerId).ToListAsync();
+            _context.MarketSlaves.Where(t => t.PlayerId == playerId).ToListAsync();
 
         public Task<MarketSlave?> GetAsync(Guid slaveId) =>
             _context.MarketSlaves.FirstOrDefaultAsync(s => s.Id == slaveId);

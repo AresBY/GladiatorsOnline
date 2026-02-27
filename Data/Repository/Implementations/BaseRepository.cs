@@ -12,6 +12,6 @@ namespace Gladiators.Data.Repository.Implementations
         public Task<T?> GetByIdAsync(Guid id) => _context.Set<T>().FindAsync(id).AsTask();
         public Task AddAsync(T entity) { _context.Set<T>().Add(entity); return _context.SaveChangesAsync(); }
         public Task UpdateAsync(T entity) { _context.Set<T>().Update(entity); return _context.SaveChangesAsync(); }
-        public Task DeleteAsync(T entity) { _context.Set<T>().Remove(entity); return _context.SaveChangesAsync(); }
+        public Task<int> DeleteAsync(T entity) { _context.Set<T>().Remove(entity); return _context.SaveChangesAsync(); }
     }
 }

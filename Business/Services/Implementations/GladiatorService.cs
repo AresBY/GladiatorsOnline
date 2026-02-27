@@ -21,6 +21,6 @@ namespace Gladiators.Business.Services.Implementations
 
         public Task UpdateAsync(Gladiator gladiator) => _repository.UpdateAsync(gladiator);
 
-        public Task DeleteAsync(Gladiator gladiator) => _repository.DeleteAsync(gladiator);
+        public Task<int> DeleteAsync(Gladiator gladiator) => _repository.DeleteAsync(gladiator);
     }
 }
