@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Gladiators.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260225151136_Initial2")]
-    partial class Initial2
+    [Migration("20260227112944_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
