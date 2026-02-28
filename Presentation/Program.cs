@@ -4,8 +4,10 @@ using Gladiators.Data;
 using Gladiators.Data.Repository.Implementations;
 using Gladiators.Data.Repository.Interfaces;
 using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
+// ---------- CORS ----------
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowUnityWebGL", policy =>
@@ -17,68 +19,74 @@ builder.Services.AddCors(options =>
     });
 });
 
+// ---------- Порт для Kestrel ----------
+var port = Environment.GetEnvironmentVariable("PORT") ?? "5179";
 builder.WebHost.ConfigureKestrel(options =>
 {
-    options.ListenAnyIP(5179);
+    options.ListenAnyIP(int.Parse(port));
 });
 
+// ---------- Конфигурация ----------
 builder.Configuration
     .AddJsonFile("appsettings.json", optional: false)
     .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", optional: true)
     .AddEnvironmentVariables();
 
-//var cs = builder.Configuration.GetConnectionString("DefaultConnection");
-//Console.WriteLine("Using connection string: " + cs);
-
-//builder.Services.AddDbContext<AppDbContext>(options =>
-//    options.UseNpgsql(cs));
+// ---------- Connection string ----------
+string cs;
 
 var databaseUrl = Environment.GetEnvironmentVariable("DATABASE_URL");
-if (string.IsNullOrWhiteSpace(databaseUrl))
-    throw new Exception("DATABASE_URL is not set!");
-
-// DATABASE_URL = postgresql://user:pass@host:port/db
-var uri = new Uri(databaseUrl);
-
-var userInfo = uri.UserInfo.Split(':');
-var username = userInfo[0];
-var password = userInfo[1];
-
-var cs = new Npgsql.NpgsqlConnectionStringBuilder
+if (!string.IsNullOrWhiteSpace(databaseUrl))
 {
-    Host = uri.Host,
-    Port = uri.Port > 0 ? uri.Port : 5432,
-    Database = uri.AbsolutePath.TrimStart('/'),
-    Username = username,
-    Password = password,
-    SslMode = Npgsql.SslMode.Require
-}.ToString();
+    // Продакшн / Render
+    var uri = new Uri(databaseUrl);
+    var userInfo = uri.UserInfo.Split(':');
+    var username = userInfo[0];
+    var password = userInfo[1];
 
-Console.WriteLine("Using connection string: " + cs);
+    cs = new Npgsql.NpgsqlConnectionStringBuilder
+    {
+        Host = uri.Host,
+        Port = uri.Port > 0 ? uri.Port : 5432,
+        Database = uri.AbsolutePath.TrimStart('/'),
+        Username = username,
+        Password = password,
+        SslMode = Npgsql.SslMode.Require
+    }.ToString();
 
+    Console.WriteLine("Using production DATABASE_URL: " + cs);
+}
+else
+{
+    // Локальная разработка
+    cs = builder.Configuration.GetConnectionString("DefaultConnection");
+    Console.WriteLine("Using local DefaultConnection: " + cs);
+}
+
+// ---------- DbContext ----------
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(cs));
 
+// ---------- DI: Services ----------
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IGladiatorService, GladiatorService>();
 builder.Services.AddScoped<IMarketSlaveService, MarketSlaveService>();
 builder.Services.AddScoped<IPlayerSlaveService, PlayerSlaveService>();
 
-
+// ---------- DI: Repositories ----------
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IGladiatorRepository, GladiatorRepository>();
 builder.Services.AddScoped<IMarketSlaveRepository, MarketSlaveRepository>();
 builder.Services.AddScoped<IPlayerSlaveRepository, PlayerSlaveRepository>();
 
-
-
-
+// ---------- Controllers & Swagger ----------
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
+// ---------- Автомиграции ----------
 try
 {
     using (var scope = app.Services.CreateScope())
@@ -93,8 +101,8 @@ catch (Exception ex)
     Console.WriteLine("DB connection error: " + ex.Message);
 }
 
+// ---------- Middleware ----------
 app.UseCors("AllowUnityWebGL");
-
 app.UseSwagger();
 app.UseSwaggerUI(c =>
 {
@@ -106,5 +114,4 @@ app.UseSwaggerUI(c =>
 app.UseAuthorization();
 app.MapControllers();
 
-app.MapGet("/", () => "Hello world");
 app.Run();
