@@ -27,7 +27,22 @@ builder.Configuration
     .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", optional: true)
     .AddEnvironmentVariables();
 
-var cs = builder.Configuration.GetConnectionString("DefaultConnection");
+//var cs = builder.Configuration.GetConnectionString("DefaultConnection");
+//Console.WriteLine("Using connection string: " + cs);
+
+//builder.Services.AddDbContext<AppDbContext>(options =>
+//    options.UseNpgsql(cs));
+
+var databaseUrl = Environment.GetEnvironmentVariable("DATABASE_URL");
+if (string.IsNullOrWhiteSpace(databaseUrl))
+    throw new Exception("DATABASE_URL is not set!");
+
+// Преобразуем URL в стандартный Npgsql connection string
+var cs = new Npgsql.NpgsqlConnectionStringBuilder(databaseUrl)
+{
+    SslMode = Npgsql.SslMode.Require
+}.ToString();
+
 Console.WriteLine("Using connection string: " + cs);
 
 builder.Services.AddDbContext<AppDbContext>(options =>
