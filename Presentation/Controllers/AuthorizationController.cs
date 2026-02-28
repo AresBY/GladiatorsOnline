@@ -25,7 +25,7 @@ namespace Gladiators.WebApi.Controllers
             try
             {
                 var guid = await _authService.RegisterAsync(credentials.Username, credentials.Password);
-                return Ok(guid);
+                return Ok(new { guid = guid });
             }
             catch (Exception ex)
             {
@@ -39,11 +39,11 @@ namespace Gladiators.WebApi.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] UserCredentialsDto credentials)
         {
-            var user = await _authService.LoginAsync(credentials.Username, credentials.Password);
-            if (user == null)
+            var guid = await _authService.LoginAsync(credentials.Username, credentials.Password);
+            if (guid == null)
                 return Unauthorized("Неверный логин или пароль");
 
-            return Ok(user);
+            return Ok(new { guid = guid });
         }
 
         [HttpGet("all")]
