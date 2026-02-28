@@ -10,28 +10,31 @@ namespace Gladiators.Business.Services.Implementations
     {
         private readonly IMarketSlaveRepository _marketRepo;
         private readonly IPlayerSlaveRepository _playerSlaveRepo;
+        private readonly ISlaveGenerator _slaveGenerator;
         private readonly Random _rnd = new();
 
-        public MarketSlaveService(IPlayerSlaveRepository playerSlaveRepo, IMarketSlaveRepository marketRepo)
+        public MarketSlaveService(IPlayerSlaveRepository playerSlaveRepo, IMarketSlaveRepository marketRepo, ISlaveGenerator slaveGenerator)
         {
             _playerSlaveRepo = playerSlaveRepo;
             _marketRepo = marketRepo;
+            _slaveGenerator = slaveGenerator;
         }
 
         // Получить всех доступных рабов для игрока
 
         public async Task<IEnumerable<MarketSlave>> GetAllAsync(Guid playerId)
         {
-            var market = await _marketRepo.GetAllAsync(playerId);
+            var marketSlaves = await _marketRepo.GetAllAsync(playerId);
 
             // Если рынок пустой, обновляем
-            if (market.Count == 0)
+            if (marketSlaves.Count == 0)
             {
-                await UpdateMarketSlavesAsync(playerId);
-                market = await _marketRepo.GetAllAsync(playerId);
+                var slaves = _slaveGenerator.CreateSlaves(5, playerId);
+                await _marketRepo.UpdateMarketSlavesAsync(slaves);
+                return slaves;
             }
 
-            return market;
+            return marketSlaves;
         }
 
         // Покупка раба
@@ -51,26 +54,6 @@ namespace Gladiators.Business.Services.Implementations
             await _marketRepo.DeleteAsync(marketSlave);
 
             await _playerSlaveRepo.AddAsync(playersSlave);
-        }
-
-        public async Task UpdateMarketSlavesAsync(Guid playerId)
-        {
-            var newMarketSlaves = new List<MarketSlave>();
-
-            for (int i = 0; i < 5; i++) // генерируем 5 рабов
-            {
-                newMarketSlaves.Add(new MarketSlave
-                {
-                    Id = Guid.NewGuid(),
-                    Name = $"Slave {_rnd.Next(1000, 9999)}",
-                    Strength = _rnd.Next(1, 10),
-                    Dexterity = _rnd.Next(1, 10),
-                    Stamina = _rnd.Next(1, 10),
-                    Price = _rnd.Next(50, 500),
-                    PlayerId = playerId
-                });
-            }
-            await _marketRepo.UpdateMarketSlavesAsync(newMarketSlaves);
         }
     }
 }

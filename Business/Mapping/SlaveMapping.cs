@@ -15,8 +15,9 @@ namespace Gladiators.Business.Mapping
                 Name = entity.Name,
                 Strength = entity.Strength,
                 Dexterity = entity.Dexterity,
-                Stamina = entity.Stamina,
-                Price = entity.Price
+                Intuition = entity.Intuition,
+                Stamina = entity.Stamina
+
             };
 
             switch (entity)
@@ -26,6 +27,7 @@ namespace Gladiators.Business.Mapping
                     break;
                 case MarketSlave ms when dto is MarketSlaveDto msDto:
                     msDto.PlayerId = ms.PlayerId;
+                    msDto.Price = ms.Price;
                     break;
             }
 
@@ -42,8 +44,8 @@ namespace Gladiators.Business.Mapping
                 Name = dto.Name,
                 Strength = dto.Strength,
                 Dexterity = dto.Dexterity,
-                Stamina = dto.Stamina,
-                Price = dto.Price
+                Intuition = dto.Intuition,
+                Stamina = dto.Stamina
             };
 
             switch (entity)
@@ -53,6 +55,7 @@ namespace Gladiators.Business.Mapping
                     break;
                 case MarketSlave ms when dto is MarketSlaveDto msDto:
                     ms.PlayerId = msDto.PlayerId;
+                    ms.Price = msDto.Price;
                     break;
             }
 

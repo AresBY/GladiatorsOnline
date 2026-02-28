@@ -13,11 +13,5 @@ namespace Gladiators.Business.Services.Interfaces
         /// Купить раба. После покупки он убирается с рынка.
         /// </summary>
         Task BuyAsync(Guid slaveId);
-
-        /// <summary>
-        /// Принудительно обновить рынок (сгенерировать новых рабов).
-        /// </summary>
-        Task UpdateMarketSlavesAsync(Guid playerId);
-
     }
 }

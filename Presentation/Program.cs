@@ -72,6 +72,7 @@ builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IGladiatorService, GladiatorService>();
 builder.Services.AddScoped<IMarketSlaveService, MarketSlaveService>();
 builder.Services.AddScoped<IPlayerSlaveService, PlayerSlaveService>();
+builder.Services.AddScoped<ISlaveGenerator, SlaveGenerator>();
 
 // ---------- DI: Repositories ----------
 builder.Services.AddScoped<IUserRepository, UserRepository>();
