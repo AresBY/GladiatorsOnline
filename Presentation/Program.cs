@@ -8,10 +8,10 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowAll", policy =>
+    options.AddPolicy("AllowLocalFront", policy =>
     {
         policy
-            .AllowAnyOrigin()    // разрешить все источники
+            .WithOrigins("http://127.0.0.1:5500")
             .AllowAnyHeader()
             .AllowAnyMethod();
     });
@@ -67,7 +67,7 @@ catch (Exception ex)
     Console.WriteLine("DB connection error: " + ex.Message);
 }
 
-app.UseCors("AllowAll");
+app.UseCors("AllowLocalFront");
 
 app.UseSwagger();
 app.UseSwaggerUI(c =>
