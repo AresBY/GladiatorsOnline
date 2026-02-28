@@ -33,7 +33,10 @@ namespace Gladiators.Business.Services.Implementations
         // Получить одного
         public async Task<PlayersSlave> GetAsync(Guid id)
         {
-            return await _playerSlaveRepo.GetByIdAsync(id);
+            var player = await _playerSlaveRepo.GetByIdAsync(id);
+            if (player == null)
+                throw new KeyNotFoundException($"Player with id {id} not found.");
+            return player;
         }
 
         // Обновление

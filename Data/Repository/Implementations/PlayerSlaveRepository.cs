@@ -22,10 +22,15 @@ namespace Gladiators.Data.Repository.Implementations
         }
 
         // Получить конкретного раба игрока
-        public async Task<PlayersSlave?> GetAsync(Guid playerId, Guid slaveId)
+        public async Task<PlayersSlave> GetAsync(Guid playerId, Guid slaveId)
         {
-            return await _context.PlayerSlaves
+            var playerSlave = await _context.PlayerSlaves
                 .FirstOrDefaultAsync(s => s.OwnerId == playerId && s.Id == slaveId);
+
+            if (playerSlave == null)
+                throw new KeyNotFoundException($"PlayerSlave with Id {slaveId} for Player {playerId} not found.");
+
+            return playerSlave;
         }
     }
 }

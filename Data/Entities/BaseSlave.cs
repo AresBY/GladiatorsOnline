@@ -1,8 +1,7 @@
 ﻿namespace Gladiators.Data.Entities
 {
-    public class BaseSlave
+    public class BaseSlave : BaseEntity
     {
-        public Guid Id { get; set; }                 // Уникальный идентификатор
         public string Name { get; set; } = null!;   // Имя раба
         public int Strength { get; set; }           // Сила
         public int Dexterity { get; set; }          // Ловкость

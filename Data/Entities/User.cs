@@ -2,11 +2,8 @@
 
 namespace Gladiators.Data.Entities
 {
-    public class User
+    public class User : BaseEntity
     {
-        [Key]
-        public Guid Id { get; set; }
-
         [Required]
         public string Username { get; set; } = default!;
 

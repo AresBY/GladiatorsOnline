@@ -1,8 +1,7 @@
 ﻿namespace Gladiators.Data.Entities
 {
-    public class Gladiator
+    public class Gladiator : BaseEntity
     {
-        public Guid Id { get; set; }
         public string Name { get; set; } = null!;
         public int PortraitID { get; set; }
 
