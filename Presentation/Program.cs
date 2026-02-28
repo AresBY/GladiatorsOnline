@@ -37,9 +37,20 @@ var databaseUrl = Environment.GetEnvironmentVariable("DATABASE_URL");
 if (string.IsNullOrWhiteSpace(databaseUrl))
     throw new Exception("DATABASE_URL is not set!");
 
-// Преобразуем URL в стандартный Npgsql connection string
-var cs = new Npgsql.NpgsqlConnectionStringBuilder(databaseUrl)
+// DATABASE_URL = postgresql://user:pass@host:port/db
+var uri = new Uri(databaseUrl);
+
+var userInfo = uri.UserInfo.Split(':');
+var username = userInfo[0];
+var password = userInfo[1];
+
+var cs = new Npgsql.NpgsqlConnectionStringBuilder
 {
+    Host = uri.Host,
+    Port = uri.Port > 0 ? uri.Port : 5432,
+    Database = uri.AbsolutePath.TrimStart('/'),
+    Username = username,
+    Password = password,
     SslMode = Npgsql.SslMode.Require
 }.ToString();
 
