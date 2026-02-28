@@ -8,12 +8,14 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowLocalFront", policy =>
+    options.AddPolicy("AllowUnityWebGL", policy =>
     {
-        policy
-            .WithOrigins("http://127.0.0.1:5500")
-            .AllowAnyHeader()
-            .AllowAnyMethod();
+        policy.WithOrigins(
+            "http://127.0.0.1:5500",
+            "https://gladiators-online.onrender.com"
+        )
+        .AllowAnyHeader()
+        .AllowAnyMethod();
     });
 });
 
@@ -67,7 +69,7 @@ catch (Exception ex)
     Console.WriteLine("DB connection error: " + ex.Message);
 }
 
-app.UseCors("AllowLocalFront");
+app.UseCors("AllowUnityWebGL");
 
 app.UseSwagger();
 app.UseSwaggerUI(c =>
