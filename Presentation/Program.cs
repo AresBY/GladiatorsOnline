@@ -8,12 +8,12 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowUnityWebGL", policy =>
+    options.AddPolicy("AllowAll", policy =>
     {
         policy
-            .SetIsOriginAllowed(_ => true) // разрешить все источники
-            .AllowAnyHeader()    // разрешаем любые заголовки
-            .AllowAnyMethod();   // разрешаем любые HTTP методы
+            .AllowAnyOrigin()    // разрешить все источники
+            .AllowAnyHeader()
+            .AllowAnyMethod();
     });
 });
 
@@ -67,7 +67,7 @@ catch (Exception ex)
     Console.WriteLine("DB connection error: " + ex.Message);
 }
 
-app.UseCors("AllowUnityWebGL");
+app.UseCors("AllowAll");
 
 app.UseSwagger();
 app.UseSwaggerUI(c =>

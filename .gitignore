@@ -30,7 +30,7 @@ appsettings.*.json.user
 *.dbmdl
 
 # Docker
-Dockerfile
+
 docker-compose.override.yml
 docker-compose.local.yml
 
