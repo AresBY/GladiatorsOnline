@@ -13,14 +13,14 @@ namespace Gladiators.Business.Services.Implementations
             _repository = repository;
         }
 
-        public Task<List<Gladiator>> GetAllAsync() => _repository.GetAllAsync();
+        public Task<List<Fighter>> GetAllAsync() => _repository.GetAllAsync();
 
-        public Task<Gladiator?> GetByIdAsync(Guid id) => _repository.GetByIdAsync(id);
+        public Task<Fighter?> GetByIdAsync(Guid id) => _repository.GetAsync(id);
 
-        public Task AddAsync(Gladiator gladiator) => _repository.AddAsync(gladiator);
+        public Task AddAsync(Fighter gladiator) => _repository.AddAsync(gladiator);
 
-        public Task UpdateAsync(Gladiator gladiator) => _repository.UpdateAsync(gladiator);
+        public Task UpdateAsync(Fighter gladiator) => _repository.UpdateAsync(gladiator);
 
-        public Task<int> DeleteAsync(Gladiator gladiator) => _repository.DeleteAsync(gladiator);
+        public Task<int> DeleteAsync(Fighter gladiator) => _repository.DeleteAsync(gladiator);
     }
 }

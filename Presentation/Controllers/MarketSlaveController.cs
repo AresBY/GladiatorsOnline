@@ -31,12 +31,11 @@ namespace Gladiators.Presentation.Controllers
 
             try
             {
-                await _marketService.BuyAsync(slaveId);
-                return NoContent();
+                var operationResult = await _marketService.BuyAsync(slaveId);
+                return Ok(operationResult == 1 ? slaveId : null);
             }
             catch (Exception ex)
             {
-                // Например, раб уже куплен
                 return BadRequest(new { message = ex.Message });
             }
         }

@@ -1,0 +1,69 @@
+﻿using Gladiators.Business.Factories;
+using Gladiators.Business.Services.Interfaces;
+using Gladiators.Data.Entities;
+using Gladiators.Data.Repository.Interfaces;
+
+namespace Gladiators.Business.Services.Implementations
+{
+    public class BattleService : IBattleService
+    {
+        private readonly IPlayerSlaveRepository _playerSlaveRepo;
+        private readonly FighterFactory _fighterFactory;
+        private static readonly Random _rnd = new Random();
+
+        public BattleService(IPlayerSlaveRepository playerSlaveRepo, FighterFactory fighterFactory)
+        {
+            _playerSlaveRepo = playerSlaveRepo;
+            _fighterFactory = fighterFactory;
+        }
+        public async Task<Battle> ExecuteBattle(Guid firstSlaveId, Guid secondSlaveId)
+        {
+            var firstSlave = await _playerSlaveRepo.GetAsync(firstSlaveId);
+            var secondSlave = await _playerSlaveRepo.GetAsync(secondSlaveId);
+
+            if (firstSlave == null || secondSlave == null)
+                throw new Exception("One or both gladiators not found");
+
+            Battle battle = new Battle(firstSlave.Id, secondSlave.Id, firstSlave.Name, secondSlave.Name);
+
+            Fighter firstFighter = _fighterFactory.Create(firstSlave);
+            Fighter secondFighter = _fighterFactory.Create(secondSlave);
+
+
+            int round = 0;
+
+            while (firstFighter.HP > 0 && secondFighter.HP > 0)
+            {
+                Fighter attacker = round % 2 == 0 ? firstFighter : secondFighter;
+                Fighter defender = round % 2 == 0 ? secondFighter : firstFighter;
+
+                var attackResult = new AttackResult();
+
+                float dodgeChance = 0f;
+                if (defender.Dodge + attacker.AntiDodge > 0)
+                    dodgeChance = (float)defender.Dodge / (defender.Dodge + attacker.AntiDodge);
+
+                attackResult.Missed = _rnd.NextDouble() < dodgeChance;
+
+                if (!attackResult.Missed)
+                {
+                    float critChance = 0f;
+                    if (attacker.Critical + defender.AntiCritical > 0)
+                        critChance = (float)attacker.Critical / (attacker.Critical + defender.AntiCritical);
+                    attackResult.Critical = _rnd.NextDouble() < critChance;
+
+                    attackResult.DamageDealt = attackResult.Critical ? attacker.Damage * 2 : attacker.Damage;
+
+                    defender.HP -= attackResult.DamageDealt;
+                }
+                round++;
+
+                battle.BattleRounds.Add(attackResult);
+            }
+
+            battle.WinnerId = firstFighter.HP > 0 ? firstFighter.Id : secondFighter.Id;
+            battle.LoserId = firstFighter.HP <= 0 ? firstFighter.Id : secondFighter.Id;
+            return battle;
+        }
+    }
+}

@@ -5,17 +5,12 @@ namespace Gladiators.Business.Mapping
 {
     public static class GladiatorMapping
     {
-        public static GladiatorDto ToDto(this Gladiator entity)
+        public static GladiatorDto ToDto(this Fighter entity)
         {
             return new GladiatorDto
             {
                 Id = entity.Id,
                 Name = entity.Name,
-                PortraitID = entity.PortraitID,
-                Strength = entity.Strength,
-                Dexterity = entity.Dexterity,
-                Intuition = entity.Intuition,
-                Stamina = entity.Stamina,
                 Damage = entity.Damage,
                 Dodge = entity.Dodge,
                 AntiDodge = entity.AntiDodge,
@@ -26,17 +21,12 @@ namespace Gladiators.Business.Mapping
             };
         }
 
-        public static Gladiator ToEntity(this GladiatorDto dto)
+        public static Fighter ToEntity(this GladiatorDto dto)
         {
-            return new Gladiator
+            return new Fighter
             {
                 Id = dto.Id,
                 Name = dto.Name,
-                PortraitID = dto.PortraitID,
-                Strength = dto.Strength,
-                Dexterity = dto.Dexterity,
-                Intuition = dto.Intuition,
-                Stamina = dto.Stamina,
                 Damage = dto.Damage,
                 Dodge = dto.Dodge,
                 AntiDodge = dto.AntiDodge,
@@ -47,14 +37,9 @@ namespace Gladiators.Business.Mapping
             };
         }
 
-        public static void UpdateFromDto(this Gladiator entity, GladiatorDto dto)
+        public static void UpdateFromDto(this Fighter entity, GladiatorDto dto)
         {
             entity.Name = dto.Name;
-            entity.PortraitID = dto.PortraitID;
-            entity.Strength = dto.Strength;
-            entity.Dexterity = dto.Dexterity;
-            entity.Intuition = dto.Intuition;
-            entity.Stamina = dto.Stamina;
             entity.Damage = dto.Damage;
             entity.Dodge = dto.Dodge;
             entity.AntiDodge = dto.AntiDodge;

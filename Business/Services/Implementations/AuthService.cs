@@ -46,7 +46,7 @@ namespace Gladiators.Business.Services.Implementations
 
         public async Task<int> DeleteUserAsync(Guid id)
         {
-            var user = await _userRepo.GetByIdAsync(id); // ищем пользователя по Id
+            var user = await _userRepo.GetAsync(id); // ищем пользователя по Id
             if (user == null)
                 return 0; // не найден
 

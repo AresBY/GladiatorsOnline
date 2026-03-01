@@ -12,6 +12,6 @@ namespace Gladiators.Business.Services.Interfaces
         /// <summary>
         /// Купить раба. После покупки он убирается с рынка.
         /// </summary>
-        Task BuyAsync(Guid slaveId);
+        Task<int> BuyAsync(Guid slaveId);
     }
 }

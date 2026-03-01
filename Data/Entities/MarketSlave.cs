@@ -4,5 +4,7 @@
     {
         public Guid? PlayerId { get; set; }
         public int Price { get; set; }
+
+        public User Player { get; set; } = default!;
     }
 }

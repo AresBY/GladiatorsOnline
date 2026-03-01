@@ -3,7 +3,7 @@ using Gladiators.Data.Repository.Interfaces;
 
 namespace Gladiators.Data.Repository.Implementations
 {
-    public class GladiatorRepository : BaseRepository<Gladiator>, IGladiatorRepository
+    public class GladiatorRepository : BaseRepository<Fighter>, IGladiatorRepository
     {
         private readonly AppDbContext _context;
 

@@ -1,3 +1,4 @@
+using Gladiators.Business.Factories;
 using Gladiators.Business.Services.Implementations;
 using Gladiators.Business.Services.Interfaces;
 using Gladiators.Data;
@@ -73,6 +74,11 @@ builder.Services.AddScoped<IGladiatorService, GladiatorService>();
 builder.Services.AddScoped<IMarketSlaveService, MarketSlaveService>();
 builder.Services.AddScoped<IPlayerSlaveService, PlayerSlaveService>();
 builder.Services.AddScoped<ISlaveGenerator, SlaveGenerator>();
+builder.Services.AddScoped<IBattleService, BattleService>();
+
+
+// ---------- DI: Factories ----------
+builder.Services.AddScoped<FighterFactory>();
 
 // ---------- DI: Repositories ----------
 builder.Services.AddScoped<IUserRepository, UserRepository>();

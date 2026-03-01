@@ -16,7 +16,8 @@ namespace Gladiators.Business.Mapping
                 Strength = entity.Strength,
                 Dexterity = entity.Dexterity,
                 Intuition = entity.Intuition,
-                Stamina = entity.Stamina
+                Stamina = entity.Stamina,
+                Wins = entity.Wins
 
             };
 
@@ -45,7 +46,8 @@ namespace Gladiators.Business.Mapping
                 Strength = dto.Strength,
                 Dexterity = dto.Dexterity,
                 Intuition = dto.Intuition,
-                Stamina = dto.Stamina
+                Stamina = dto.Stamina,
+                Wins = dto.Wins
             };
 
             switch (entity)

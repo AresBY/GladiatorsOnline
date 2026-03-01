@@ -8,6 +8,7 @@
         public int Dexterity { get; set; }
         public int Intuition { get; set; }
         public int Stamina { get; set; }
+        public int Wins { get; set; }
     }
 
     public class PlayersSlaveDto : BaseSlaveDto

@@ -11,13 +11,13 @@ public class BaseRepository<T> : IBaseRepository<T> where T : BaseEntity
     public Task<List<T>> GetAllAsync() =>
         _context.Set<T>().ToListAsync();
 
-    public Task<T?> GetByIdAsync(Guid id) =>
+    public Task<T?> GetAsync(Guid id) =>
         _context.Set<T>().FirstOrDefaultAsync(e => e.Id == id);
 
-    public async Task AddAsync(T entity)
+    public async Task<int> AddAsync(T entity)
     {
         _context.Set<T>().Add(entity);
-        await _context.SaveChangesAsync();
+        return await _context.SaveChangesAsync();
     }
 
     public async Task UpdateAsync(T entity)

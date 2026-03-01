@@ -16,7 +16,7 @@ namespace Gladiators.Business.Services.Implementations
         // Удаление
         public async Task DeleteAsync(Guid slaveId)
         {
-            var slave = await _playerSlaveRepo.GetByIdAsync(slaveId);
+            var slave = await _playerSlaveRepo.GetAsync(slaveId);
             if (slave == null)
             {
                 throw new ArgumentNullException(nameof(slave));
@@ -33,7 +33,7 @@ namespace Gladiators.Business.Services.Implementations
         // Получить одного
         public async Task<PlayersSlave> GetAsync(Guid id)
         {
-            var player = await _playerSlaveRepo.GetByIdAsync(id);
+            var player = await _playerSlaveRepo.GetAsync(id);
             if (player == null)
                 throw new KeyNotFoundException($"Player with id {id} not found.");
             return player;

@@ -29,7 +29,7 @@ namespace Gladiators.Business.Services.Implementations
             // Если рынок пустой, обновляем
             if (marketSlaves.Count == 0)
             {
-                var slaves = _slaveGenerator.CreateSlaves(5, playerId);
+                var slaves = _slaveGenerator.CreateSlaves(25, playerId);
                 await _marketRepo.UpdateMarketSlavesAsync(slaves);
                 return slaves;
             }
@@ -38,7 +38,7 @@ namespace Gladiators.Business.Services.Implementations
         }
 
         // Покупка раба
-        public async Task BuyAsync(Guid marketSlaveId)
+        public async Task<int> BuyAsync(Guid marketSlaveId)
         {
             var marketSlave = await _marketRepo.GetAsync(marketSlaveId);
 
@@ -53,7 +53,7 @@ namespace Gladiators.Business.Services.Implementations
 
             await _marketRepo.DeleteAsync(marketSlave);
 
-            await _playerSlaveRepo.AddAsync(playersSlave);
+            return await _playerSlaveRepo.AddAsync(playersSlave);
         }
     }
 }

@@ -9,5 +9,10 @@ namespace Gladiators.Data.Entities
 
         [Required]
         public string Password { get; set; } = default!;
+
+
+        // Навигации
+        public ICollection<PlayersSlave> PlayerSlaves { get; set; } = new List<PlayersSlave>();
+        public ICollection<MarketSlave> MarketSlaves { get; set; } = new List<MarketSlave>();
     }
 }

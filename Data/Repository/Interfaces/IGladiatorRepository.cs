@@ -2,7 +2,7 @@
 
 namespace Gladiators.Data.Repository.Interfaces
 {
-    public interface IGladiatorRepository : IBaseRepository<Gladiator>
+    public interface IGladiatorRepository : IBaseRepository<Fighter>
     {
     }
 }
