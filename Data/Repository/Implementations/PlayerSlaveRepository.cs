@@ -18,6 +18,7 @@ namespace Gladiators.Data.Repository.Implementations
         {
             return await _context.PlayerSlaves
                 .Where(s => s.OwnerId == playerId)
+                .Include(s => s.Achievements)
                 .ToListAsync();
         }
     }

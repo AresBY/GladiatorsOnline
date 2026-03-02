@@ -8,13 +8,15 @@ namespace Gladiators.Business.Services.Implementations
     public class BattleService : IBattleService
     {
         private readonly IPlayerSlaveRepository _playerSlaveRepo;
+        private readonly IAchievementService _achievementService;
         private readonly FighterFactory _fighterFactory;
         private static readonly Random _rnd = new Random();
 
-        public BattleService(IPlayerSlaveRepository playerSlaveRepo, FighterFactory fighterFactory)
+        public BattleService(IPlayerSlaveRepository playerSlaveRepo, FighterFactory fighterFactory, IAchievementService achievementService)
         {
             _playerSlaveRepo = playerSlaveRepo;
             _fighterFactory = fighterFactory;
+            _achievementService = achievementService;
         }
         public async Task<Battle> ExecuteBattle(Guid firstSlaveId, Guid secondSlaveId)
         {
@@ -24,8 +26,8 @@ namespace Gladiators.Business.Services.Implementations
             if (firstSlave == null || secondSlave == null)
                 throw new Exception("One or both gladiators not found");
 
-            Fighter firstFighter = _fighterFactory.Create(firstSlave);
-            Fighter secondFighter = _fighterFactory.Create(secondSlave);
+            Fighter firstFighter = await _fighterFactory.Create(firstSlave);
+            Fighter secondFighter = await _fighterFactory.Create(secondSlave);
 
             Battle battle = new Battle(firstSlave.Id, firstSlave.Name, firstFighter.HPMax,
                                       secondSlave.Id, secondSlave.Name, secondFighter.HPMax);
@@ -64,6 +66,8 @@ namespace Gladiators.Business.Services.Implementations
 
             battle.WinnerId = firstFighter.HP > 0 ? firstFighter.Id : secondFighter.Id;
             battle.LoserId = firstFighter.HP <= 0 ? firstFighter.Id : secondFighter.Id;
+
+            var achives = await _achievementService.AwardLastSurvivorIfNeededAsync(battle);
             return battle;
         }
     }

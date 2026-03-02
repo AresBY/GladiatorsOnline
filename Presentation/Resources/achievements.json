@@ -1,0 +1,128 @@
+[
+  {
+    "Type": "WinStreakHero",
+    "Level": 1,
+    "Criterion": "WinStreak5",
+    "BonusPercent": 5,
+    "Description": "Выиграй 5 боев подряд"
+  },
+  {
+    "Type": "WinStreakHero",
+    "Level": 2,
+    "Criterion": "WinStreak10",
+    "BonusPercent": 10,
+    "Description": "Выиграй 10 боев подряд"
+  },
+  {
+    "Type": "WinStreakHero",
+    "Level": 3,
+    "Criterion": "WinStreak20",
+    "BonusPercent": 15,
+    "Description": "Выиграй 20 боев подряд"
+  },
+  {
+    "Type": "CriticalMaster",
+    "Level": 1,
+    "Criterion": "Crit3",
+    "BonusPercent": 5,
+    "Description": "Нанеси 3 критических удара подряд"
+  },
+  {
+    "Type": "CriticalMaster",
+    "Level": 2,
+    "Criterion": "Crit5",
+    "BonusPercent": 10,
+    "Description": "Нанеси 5 критических ударов подряд"
+  },
+  {
+    "Type": "CriticalMaster",
+    "Level": 3,
+    "Criterion": "Crit8",
+    "BonusPercent": 15,
+    "Description": "Нанеси 8 критических ударов подряд"
+  },
+  {
+    "Type": "PatientStriker",
+    "Level": 1,
+    "Criterion": "NoCrit1",
+    "BonusPercent": 5,
+    "Description": "Не нанеси ни одного крита за бой"
+  },
+  {
+    "Type": "PatientStriker",
+    "Level": 2,
+    "Criterion": "NoCrit3",
+    "BonusPercent": 10,
+    "Description": "Не наноси критов 3 боя подряд"
+  },
+  {
+    "Type": "PatientStriker",
+    "Level": 3,
+    "Criterion": "NoCrit5",
+    "BonusPercent": 15,
+    "Description": "Не наноси критов 5 боев подряд"
+  },
+  {
+    "Type": "Unflinching",
+    "Level": 1,
+    "Criterion": "NoDodge1",
+    "BonusPercent": 5,
+    "Description": "Не увернись ни разу за бой"
+  },
+  {
+    "Type": "Unflinching",
+    "Level": 2,
+    "Criterion": "NoDodge3",
+    "BonusPercent": 10,
+    "Description": "Не увернись 3 боя подряд"
+  },
+  {
+    "Type": "Unflinching",
+    "Level": 3,
+    "Criterion": "NoDodge5",
+    "BonusPercent": 15,
+    "Description": "Не увернись 5 боев подряд"
+  },
+  {
+    "Type": "LastSurvivor",
+    "Level": 1,
+    "Criterion": "HPBelow10_1",
+    "BonusPercent": 5,
+    "Description": "Выиграй бой с остатком HP < 10%"
+  },
+  {
+    "Type": "LastSurvivor",
+    "Level": 2,
+    "Criterion": "HPBelow10_2",
+    "BonusPercent": 10,
+    "Description": "Выиграй 2 боя с HP < 10%"
+  },
+  {
+    "Type": "LastSurvivor",
+    "Level": 3,
+    "Criterion": "HPBelow10_3",
+    "BonusPercent": 15,
+    "Description": "Выиграй 3 боя с HP < 10%"
+  },
+  {
+    "Type": "Dominator",
+    "Level": 1,
+    "Criterion": "HPAbove80_3",
+    "BonusPercent": 2,
+    "Description": "Выиграй 3 боя с HP > 80%"
+  },
+  {
+    "Type": "Dominator",
+    "Level": 2,
+    "Criterion": "HPAbove80_5",
+    "BonusPercent": 5,
+    "Description": "Выиграй 5 боев с HP > 80%"
+  },
+  {
+    "Type": "Dominator",
+    "Level": 3,
+    "Criterion": "HPAbove80_8",
+    "BonusPercent": 10,
+    "Description": "Выиграй 8 боев с HP > 80%"
+  }
+]

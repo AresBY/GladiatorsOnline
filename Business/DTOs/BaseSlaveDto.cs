@@ -14,6 +14,7 @@
     public class PlayersSlaveDto : BaseSlaveDto
     {
         public Guid? OwnerId { get; set; }
+        public ICollection<AchievementDto> Achievements { get; set; } = new List<AchievementDto>();
     }
 
     public class MarketSlaveDto : BaseSlaveDto

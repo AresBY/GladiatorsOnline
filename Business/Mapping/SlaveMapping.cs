@@ -25,6 +25,13 @@ namespace Gladiators.Business.Mapping
             {
                 case PlayersSlave ps when dto is PlayersSlaveDto psDto:
                     psDto.OwnerId = ps.OwnerId;
+                    psDto.Achievements = ps.Achievements
+                                   .Select(a => new AchievementDto
+                                   {
+                                       Id = a.Id,
+                                       Type = a.Type,
+                                       Level = a.Level
+                                   }).ToList();
                     break;
                 case MarketSlave ms when dto is MarketSlaveDto msDto:
                     msDto.PlayerId = ms.PlayerId;

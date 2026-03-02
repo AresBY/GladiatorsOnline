@@ -11,6 +11,7 @@ namespace Gladiators.Data
         public DbSet<Fighter> Gladiators => Set<Fighter>();
         public DbSet<MarketSlave> MarketSlaves => Set<MarketSlave>();
         public DbSet<PlayersSlave> PlayerSlaves => Set<PlayersSlave>();
+        public DbSet<Achievement> Achievements => Set<Achievement>();
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -29,6 +30,13 @@ namespace Gladiators.Data
                 .WithMany(u => u.MarketSlaves)
                 .HasForeignKey(m => m.PlayerId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Achievement>()
+                .HasOne(a => a.PlayersSlave)
+                .WithMany(p => p.Achievements)
+                .HasForeignKey(a => a.PlayerSlaveId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }
+
