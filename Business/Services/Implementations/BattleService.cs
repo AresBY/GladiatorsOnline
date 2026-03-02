@@ -24,10 +24,11 @@ namespace Gladiators.Business.Services.Implementations
             if (firstSlave == null || secondSlave == null)
                 throw new Exception("One or both gladiators not found");
 
-            Battle battle = new Battle(firstSlave.Id, secondSlave.Id, firstSlave.Name, secondSlave.Name);
-
             Fighter firstFighter = _fighterFactory.Create(firstSlave);
             Fighter secondFighter = _fighterFactory.Create(secondSlave);
+
+            Battle battle = new Battle(firstSlave.Id, firstSlave.Name, firstFighter.HPMax,
+                                      secondSlave.Id, secondSlave.Name, secondFighter.HPMax);
 
 
             int round = 0;

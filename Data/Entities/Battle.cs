@@ -4,17 +4,26 @@
     {
         public Guid FirstSlaveID { get; set; }
         public string FirstSlaveName { get; set; }
+        public int FirstSlaveMaxHP { get; set; }
+
         public Guid SecondSlaveID { get; set; }
         public string SecondSlaveName { get; set; }
+        public int SecondSlaveMaxHP { get; set; }
+
         public Guid WinnerId { get; set; }
         public Guid LoserId { get; set; }
-        public Battle(Guid firstSlaveID, Guid secondSlaveID, string firstSlaveName, string secondSlaveName)
+        public Battle(Guid firstSlaveID, string firstSlaveName, int firstSlaveMaxHP,
+            Guid secondSlaveID, string secondSlaveName, int secondSlaveMaxHP)
         {
             Id = Guid.NewGuid();
+
             FirstSlaveID = firstSlaveID;
-            SecondSlaveID = secondSlaveID;
             FirstSlaveName = firstSlaveName;
+            FirstSlaveMaxHP = firstSlaveMaxHP;
+
+            SecondSlaveID = secondSlaveID;
             SecondSlaveName = secondSlaveName;
+            SecondSlaveMaxHP = secondSlaveMaxHP;
         }
         public List<AttackResult> BattleRounds { get; set; } = new List<AttackResult>();
     }
