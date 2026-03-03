@@ -8,12 +8,10 @@ namespace Gladiators.Business.Services.Implementations
     public class AchievementService : IAchievementService
     {
         private readonly IAchievementRepository _achievementRepo;
-        private readonly IReadOnlyList<AchievementDefinition> _achievementDefinitions;
 
-        public AchievementService(IAchievementRepository achievementRepo, IReadOnlyList<AchievementDefinition> achievementDefinitions)
+        public AchievementService(IAchievementRepository achievementRepo)
         {
             _achievementRepo = achievementRepo;
-            _achievementDefinitions = achievementDefinitions;
         }
 
         public async Task<List<Achievement>> GetAchievementsAsync(Guid playersSlaveId)

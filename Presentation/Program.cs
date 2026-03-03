@@ -1,13 +1,10 @@
 using Gladiators.Business.Factories;
-using Gladiators.Business.Providers;
 using Gladiators.Business.Services.Implementations;
 using Gladiators.Business.Services.Interfaces;
 using Gladiators.Data;
-using Gladiators.Data.Entities;
 using Gladiators.Data.Repository.Implementations;
 using Gladiators.Data.Repository.Interfaces;
 using Microsoft.EntityFrameworkCore;
-using System.Text.Json;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -72,12 +69,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(cs));
 
 // ---------- DI: Providers ----------
-var path = Path.Combine(builder.Environment.ContentRootPath, "Resources", "achievements.json");
-path = Path.GetFullPath(path);
 
-var definitions = JsonSerializer.Deserialize<List<AchievementDefinition>>(File.ReadAllText(path)) ?? new List<AchievementDefinition>();
-builder.Services.AddSingleton<IReadOnlyList<AchievementDefinition>>(definitions);
-builder.Services.AddSingleton<IAchievementConfigProvider>(new AchievementConfigProvider(definitions));
 // ---------- DI: Services ----------
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IGladiatorService, GladiatorService>();
