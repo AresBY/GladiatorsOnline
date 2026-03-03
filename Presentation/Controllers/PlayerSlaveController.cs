@@ -21,8 +21,7 @@ namespace Gladiators.Presentation.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll(Guid playerId)
         {
-            var slaves = await _playerService.GetAllAsync(playerId);
-            var result = slaves.Select(s => s.ToDto<PlayersSlaveDto>()).ToList();
+            var result = await _playerService.GetAllAsync(playerId);
             return Ok(result);
         }
 

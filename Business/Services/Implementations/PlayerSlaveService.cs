@@ -1,4 +1,6 @@
-﻿using Gladiators.Business.Services.Interfaces;
+﻿using Gladiators.Business.DTOs;
+using Gladiators.Business.Mapping;
+using Gladiators.Business.Services.Interfaces;
 using Gladiators.Data.Entities;
 using Gladiators.Data.Repository.Interfaces;
 
@@ -25,9 +27,11 @@ namespace Gladiators.Business.Services.Implementations
         }
 
         // Получить всех рабов игрока
-        public async Task<IEnumerable<PlayersSlave>> GetAllAsync(Guid playerId)
+        public async Task<IEnumerable<PlayersSlaveDto>> GetAllAsync(Guid playerId)
         {
-            return await _playerSlaveRepo.GetAllAsync(playerId);
+            var slaves = await _playerSlaveRepo.GetAllAsync(playerId);
+            var result = slaves.Select(s => s.ToDto<PlayersSlaveDto>()).ToList();
+            return result;
         }
 
         // Получить одного

@@ -7,5 +7,7 @@ namespace Gladiators.Business.DTOs
         public Guid Id { get; set; }
         public AchievementType Type { get; set; }
         public int Level { get; set; }
+
+        public required string Description { get; set; }
     }
 }

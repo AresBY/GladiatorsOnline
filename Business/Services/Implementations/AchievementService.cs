@@ -82,9 +82,12 @@ namespace Gladiators.Business.Services.Implementations
 
                 if (existing != null)
                 {
-                    existing.Level++;
-                    await _achievementRepo.UpdateAsync(existing);
-                    updatedAchievements.Add(existing);
+                    if (existing.Level < 5)
+                    {
+                        existing.Level++;
+                        await _achievementRepo.UpdateAsync(existing);
+                        updatedAchievements.Add(existing);
+                    }
                 }
                 else
                 {
