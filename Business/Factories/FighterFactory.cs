@@ -23,7 +23,8 @@ namespace Gladiators.Business.Factories
             {
                 Id = slave.Id,
                 Name = slave.Name,
-                Damage = (int)Math.Round(slave.Strength * 1.5f),
+                Damage = (int)Math.Round(slave.Strength * 2f),
+                CriticalPower = (int)Math.Round(slave.Intuition * 0.1f),
                 HP = slave.Stamina * 20,
                 HPMax = slave.Stamina * 20,
 

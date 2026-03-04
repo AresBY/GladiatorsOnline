@@ -12,6 +12,7 @@ namespace Gladiators.Business.Mapping
                 Id = entity.Id,
                 Name = entity.Name,
                 Damage = entity.Damage,
+                CriticalPower = entity.CriticalPower,
                 Dodge = entity.Dodge,
                 AntiDodge = entity.AntiDodge,
                 Critical = entity.Critical,
@@ -28,6 +29,7 @@ namespace Gladiators.Business.Mapping
                 Id = dto.Id,
                 Name = dto.Name,
                 Damage = dto.Damage,
+                CriticalPower = dto.CriticalPower,
                 Dodge = dto.Dodge,
                 AntiDodge = dto.AntiDodge,
                 Critical = dto.Critical,
@@ -44,6 +46,7 @@ namespace Gladiators.Business.Mapping
             entity.Dodge = dto.Dodge;
             entity.AntiDodge = dto.AntiDodge;
             entity.Critical = dto.Critical;
+            entity.CriticalPower = dto.CriticalPower;
             entity.AntiCritical = dto.AntiCritical;
             entity.HP = dto.HP;
             entity.Wins = dto.Wins;

@@ -70,7 +70,7 @@ namespace Gladiators.Business.Services.Implementations
                     attackResult.Critical = _rnd.NextDouble() < critChance;
 
                     // --- Вычисление урона
-                    attackResult.DamageDealt = attackResult.Critical ? attacker.Damage * 4 : attacker.Damage;
+                    attackResult.DamageDealt = attackResult.Critical ? attacker.Damage * attacker.CriticalPower : attacker.Damage;
 
                     // Применяем урон к нужному Slave
                     if (round % 2 == 0)
