@@ -20,51 +20,73 @@ namespace Gladiators.Business.Services.Implementations
         }
         public async Task<Battle> ExecuteBattle(Guid firstSlaveId, Guid secondSlaveId)
         {
-            var firstSlave = await _playerSlaveRepo.GetAsync(firstSlaveId);
-            var secondSlave = await _playerSlaveRepo.GetAsync(secondSlaveId);
+            var firstSlaveEntity = await _playerSlaveRepo.GetAsync(firstSlaveId);
+            var secondSlaveEntity = await _playerSlaveRepo.GetAsync(secondSlaveId);
 
-            if (firstSlave == null || secondSlave == null)
+            if (firstSlaveEntity == null || secondSlaveEntity == null)
                 throw new Exception("One or both gladiators not found");
 
-            Fighter firstFighter = await _fighterFactory.Create(firstSlave);
-            Fighter secondFighter = await _fighterFactory.Create(secondSlave);
+            var firstFighter = await _fighterFactory.Create(firstSlaveEntity);
+            var secondFighter = await _fighterFactory.Create(secondSlaveEntity);
 
-            Battle battle = new Battle(firstSlave.Id, firstSlave.Name, firstFighter.HPMax,
-                                      secondSlave.Id, secondSlave.Name, secondFighter.HPMax);
+            var firstSlave = new FighterInformation
+            {
+                Id = firstSlaveEntity.Id,
+                Name = firstSlaveEntity.Name,
+                HP = firstFighter.HPMax,
+                MaxHP = firstFighter.HPMax,
+                IsWinner = false
+            };
 
+            var secondSlave = new FighterInformation
+            {
+                Id = secondSlaveEntity.Id,
+                Name = secondSlaveEntity.Name,
+                HP = secondFighter.HPMax,
+                MaxHP = secondFighter.HPMax,
+                IsWinner = false
+            };
+
+            var battle = new Battle(firstSlave, secondSlave);
 
             int round = 0;
-
-            while (firstFighter.HP > 0 && secondFighter.HP > 0)
+            while (firstSlave.HP > 0 && secondSlave.HP > 0)
             {
-                Fighter attacker = round % 2 == 0 ? firstFighter : secondFighter;
-                Fighter defender = round % 2 == 0 ? secondFighter : firstFighter;
+                var attacker = round % 2 == 0 ? firstFighter : secondFighter;
+                var defender = round % 2 == 0 ? secondFighter : firstFighter;
 
                 var attackResult = new AttackResult();
 
                 // --- Вычисление шанса промаха (уклон)
                 float dodgeTotal = defender.Dodge + attacker.AntiDodge;
-                float dodgeChance = dodgeTotal > 0 ? (float)defender.Dodge / dodgeTotal : 0f;
+                float dodgeChance = dodgeTotal > 0 ? (float)defender.Dodge / dodgeTotal : 0.5f;
                 attackResult.Missed = _rnd.NextDouble() < dodgeChance;
 
                 if (!attackResult.Missed)
                 {
                     // --- Вычисление шанса крита
                     float critTotal = attacker.Critical + defender.AntiCritical;
-                    float critChance = critTotal > 0 ? (float)attacker.Critical / critTotal : 0f;
+                    float critChance = critTotal > 0 ? (float)attacker.Critical / critTotal : 0.5f;
                     attackResult.Critical = _rnd.NextDouble() < critChance;
 
                     // --- Вычисление урона
                     attackResult.DamageDealt = attackResult.Critical ? attacker.Damage * 4 : attacker.Damage;
-                    defender.HP -= attackResult.DamageDealt;
-                }
-                round++;
 
+                    // Применяем урон к нужному Slave
+                    if (round % 2 == 0)
+                        secondSlave.HP -= attackResult.DamageDealt;
+                    else
+                        firstSlave.HP -= attackResult.DamageDealt;
+                }
+
+                round++;
                 battle.BattleRounds.Add(attackResult);
             }
 
-            battle.WinnerId = firstFighter.HP > 0 ? firstFighter.Id : secondFighter.Id;
-            battle.LoserId = firstFighter.HP <= 0 ? firstFighter.Id : secondFighter.Id;
+            if (firstSlave.HP > 0)
+                firstSlave.IsWinner = true;
+            else
+                secondSlave.IsWinner = true;
 
             var achives = await _achievementService.AwardLastSurvivorIfNeededAsync(battle);
             return battle;

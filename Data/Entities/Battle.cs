@@ -2,30 +2,24 @@
 {
     public class Battle : BaseEntity
     {
-        public Guid FirstSlaveID { get; set; }
-        public string FirstSlaveName { get; set; }
-        public int FirstSlaveMaxHP { get; set; }
+        public FighterInformation FirstFighter { get; set; }
 
-        public Guid SecondSlaveID { get; set; }
-        public string SecondSlaveName { get; set; }
-        public int SecondSlaveMaxHP { get; set; }
-
-        public Guid WinnerId { get; set; }
-        public Guid LoserId { get; set; }
-        public Battle(Guid firstSlaveID, string firstSlaveName, int firstSlaveMaxHP,
-            Guid secondSlaveID, string secondSlaveName, int secondSlaveMaxHP)
+        public FighterInformation SecondFighter { get; set; }
+        public Battle(FighterInformation firstFighter, FighterInformation secondFighter)
         {
-            Id = Guid.NewGuid();
-
-            FirstSlaveID = firstSlaveID;
-            FirstSlaveName = firstSlaveName;
-            FirstSlaveMaxHP = firstSlaveMaxHP;
-
-            SecondSlaveID = secondSlaveID;
-            SecondSlaveName = secondSlaveName;
-            SecondSlaveMaxHP = secondSlaveMaxHP;
+            FirstFighter = firstFighter;
+            SecondFighter = secondFighter;
         }
         public List<AttackResult> BattleRounds { get; set; } = new List<AttackResult>();
+    }
+    public class FighterInformation
+    {
+        public Guid Id { get; set; }
+        public string Name { get; set; }
+        public int HP { get; set; }
+        public int MaxHP { get; set; }
+
+        public bool IsWinner { get; set; }
     }
     public struct AttackResult
     {

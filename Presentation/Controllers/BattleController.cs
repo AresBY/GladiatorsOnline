@@ -20,8 +20,11 @@ namespace Gladiators.Presentation.Controllers
         public async Task<IActionResult> ExecuteBattle(Guid firstSlaveId, Guid secondSlaveId)
         {
             var result = await _service.ExecuteBattle(firstSlaveId, secondSlaveId);
-            await _playerSlaveService.DeleteAsync(result.LoserId);
-            var winner = await _playerSlaveService.GetAsync(result.WinnerId);
+
+            var winnerId = result.FirstFighter.IsWinner ? result.FirstFighter.Id : result.SecondFighter.Id;
+            var loserId = result.FirstFighter.IsWinner ? result.SecondFighter.Id : result.FirstFighter.Id;
+            await _playerSlaveService.DeleteAsync(loserId);
+            var winner = await _playerSlaveService.GetAsync(winnerId);
             winner.Wins += 1;
             await _playerSlaveService.UpdateAsync(winner);
             return Ok(result);

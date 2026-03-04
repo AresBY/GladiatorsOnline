@@ -21,11 +21,10 @@ namespace Gladiators.Business.Services.Implementations
 
         public async Task<List<Achievement>> AwardLastSurvivorIfNeededAsync(Battle battle)
         {
-            Guid winnerId = battle.WinnerId;
-            bool isFirst = winnerId == battle.FirstSlaveID;
+            // Определяем победителя
+            var winner = battle.FirstFighter.IsWinner ? battle.FirstFighter : battle.SecondFighter;
 
-            int maxHP = isFirst ? battle.FirstSlaveMaxHP : battle.SecondSlaveMaxHP;
-            int remainingHP = maxHP;
+            int remainingHP = winner.MaxHP;
 
             int critStreak = 0;
             bool threeCritsInRow = false;
@@ -35,19 +34,21 @@ namespace Gladiators.Business.Services.Implementations
 
             for (int i = 0; i < rounds.Count; i++)
             {
-                bool isWinnerTurn = (i % 2 == 0 && isFirst) || (i % 2 == 1 && !isFirst);
+                // Чередование ходов: 0-й ход — FirstFighter, 1-й — SecondFighter и т.д.
+                bool isWinnerTurn = (i % 2 == 0 && battle.FirstFighter.IsWinner) ||
+                                    (i % 2 == 1 && battle.SecondFighter.IsWinner);
                 bool isWinnerTarget = !isWinnerTurn;
 
                 var round = rounds[i];
 
-                if (isWinnerTurn)
+                if (isWinnerTurn && !threeCritsInRow)
                 {
                     if (round.Critical)
                     {
                         critStreak++;
                         anyCrit = true;
 
-                        if (critStreak >= 3)
+                        if (critStreak > 2)
                             threeCritsInRow = true;
                     }
                     else
@@ -56,19 +57,20 @@ namespace Gladiators.Business.Services.Implementations
                     }
                 }
 
+                // Вычитаем урон, если целью был победитель
                 if (isWinnerTarget)
                     remainingHP -= round.DamageDealt;
             }
 
             remainingHP = Math.Max(remainingHP, 0);
 
-            bool lastSurvivor = remainingHP > 1 && remainingHP < maxHP * 0.1;
-            bool dominator = remainingHP > maxHP * 0.8;
+            bool lastSurvivor = remainingHP > 0 && remainingHP < winner.MaxHP * 0.1;
+            bool dominator = remainingHP > winner.MaxHP * 0.8;
             bool patientStriker = !anyCrit;
             bool criticalMaster = threeCritsInRow;
 
             var existingAchievements =
-                await _achievementRepo.GetByPlayersSlaveIdAsync(winnerId);
+                await _achievementRepo.GetByPlayersSlaveIdAsync(winner.Id);
 
             var updatedAchievements = new List<Achievement>();
 
@@ -93,7 +95,7 @@ namespace Gladiators.Business.Services.Implementations
                 {
                     var newAchievement = new Achievement
                     {
-                        PlayerSlaveId = winnerId,
+                        PlayerSlaveId = winner.Id,
                         Type = type,
                         Level = 1
                     };
@@ -111,14 +113,5 @@ namespace Gladiators.Business.Services.Implementations
 
             return updatedAchievements;
         }
-    }
-    public class PlayerBattleStats
-    {
-        public Guid PlayerId { get; set; }
-        public bool LowHP { get; set; }
-        public bool ThreeCritsInRow { get; set; }
-        public bool Won { get; set; }
-        public bool NoCrits { get; set; }
-        public bool Above80HP { get; set; }
     }
 }
