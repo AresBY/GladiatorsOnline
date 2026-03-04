@@ -23,7 +23,7 @@ namespace Gladiators.Business.Factories
             {
                 Id = slave.Id,
                 Name = slave.Name,
-                Damage = slave.Strength * 2,
+                Damage = (int)Math.Round(slave.Strength * 1.5f),
                 HP = slave.Stamina * 20,
                 HPMax = slave.Stamina * 20,
 
@@ -47,8 +47,8 @@ namespace Gladiators.Business.Factories
                         break;
 
                     case AchievementType.CriticalMaster:
-                        // Увеличение шанса критического удара на 3% за уровень
-                        fighter.Critical += 3 * level;
+                        // За каждый уровень ачивки увеличиваем Critical на (3 * level)% от текущего значения
+                        fighter.Critical += (int)Math.Round(fighter.Critical * 0.03 * level);
                         break;
 
                     case AchievementType.PatientStriker:

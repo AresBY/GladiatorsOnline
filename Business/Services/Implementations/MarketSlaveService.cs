@@ -24,17 +24,17 @@ namespace Gladiators.Business.Services.Implementations
 
         public async Task<IEnumerable<MarketSlave>> GetAllAsync(Guid playerId)
         {
-            var marketSlaves = await _marketRepo.GetAllAsync(playerId);
+            //var marketSlaves = await _marketRepo.GetAllAsync(playerId);
 
-            // Если рынок пустой, обновляем
-            if (marketSlaves.Count == 0)
-            {
-                var slaves = _slaveGenerator.CreateSlaves(25, playerId);
-                await _marketRepo.UpdateMarketSlavesAsync(slaves);
-                return slaves;
-            }
+            //// Если рынок пустой, обновляем
+            //if (marketSlaves.Count == 0)
+            //{
+            var slaves = _slaveGenerator.CreateSlaves(25, playerId);
+            await _marketRepo.UpdateMarketSlavesAsync(slaves);
+            return slaves;
+            //}
 
-            return marketSlaves;
+            // return marketSlaves;
         }
 
         // Покупка раба

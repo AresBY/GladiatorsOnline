@@ -42,21 +42,20 @@ namespace Gladiators.Business.Services.Implementations
 
                 var attackResult = new AttackResult();
 
-                float dodgeChance = 0f;
-                if (defender.Dodge + attacker.AntiDodge > 0)
-                    dodgeChance = (float)defender.Dodge / (defender.Dodge + attacker.AntiDodge);
-
+                // --- Вычисление шанса промаха (уклон)
+                float dodgeTotal = defender.Dodge + attacker.AntiDodge;
+                float dodgeChance = dodgeTotal > 0 ? (float)defender.Dodge / dodgeTotal : 0f;
                 attackResult.Missed = _rnd.NextDouble() < dodgeChance;
 
                 if (!attackResult.Missed)
                 {
-                    float critChance = 0f;
-                    if (attacker.Critical + defender.AntiCritical > 0)
-                        critChance = (float)attacker.Critical / (attacker.Critical + defender.AntiCritical);
+                    // --- Вычисление шанса крита
+                    float critTotal = attacker.Critical + defender.AntiCritical;
+                    float critChance = critTotal > 0 ? (float)attacker.Critical / critTotal : 0f;
                     attackResult.Critical = _rnd.NextDouble() < critChance;
 
-                    attackResult.DamageDealt = attackResult.Critical ? attacker.Damage * 2 : attacker.Damage;
-
+                    // --- Вычисление урона
+                    attackResult.DamageDealt = attackResult.Critical ? attacker.Damage * 4 : attacker.Damage;
                     defender.HP -= attackResult.DamageDealt;
                 }
                 round++;
