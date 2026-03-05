@@ -6,6 +6,9 @@
         CriticalMaster,     // Криты подряд
         PatientStriker,     // Не использовать криты
         LastSurvivor,       // Выигрыш с HP < 10%
-        Dominator           // Выигрыш с HP > 80%
+        Dominator,           // Выигрыш с HP > 80%
+        DodgeMaster,
+        BrokenFocus,
+        CritBreaker
     }
 }

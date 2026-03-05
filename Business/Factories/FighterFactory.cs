@@ -23,15 +23,16 @@ namespace Gladiators.Business.Factories
             {
                 Id = slave.Id,
                 Name = slave.Name,
-                Damage = (int)Math.Round(slave.Strength * 2f),
-                CriticalPower = (int)Math.Round(slave.Intuition * 0.1f),
+                Damage = (int)Math.Round(slave.Strength * 2f + slave.Weight * 0.2f),
+
                 HP = slave.Stamina * 20,
                 HPMax = slave.Stamina * 20,
 
-                Dodge = slave.Dexterity * 5,
-                AntiDodge = (int)Math.Round(slave.Dexterity * 5 + slave.Intuition * 2.5),
-                Critical = slave.Intuition * 5,
-                AntiCritical = slave.Intuition * 5,
+                Dodge = (int)Math.Round(slave.Dexterity * 30f),
+                AntiDodge = (int)Math.Round(slave.Dexterity * 12 + slave.Intuition * 8f),
+                Critical = (int)Math.Round(slave.Intuition * 17f),
+                CriticalPower = Math.Max(2, (int)Math.Round(slave.Intuition * 0.08f)),
+                AntiCritical = (int)Math.Round(slave.Intuition * 40f),
 
                 Wins = slave.Wins
             };
@@ -45,36 +46,47 @@ namespace Gladiators.Business.Factories
                     case AchievementType.Veteran:
                         // Увеличение урона на 5% за уровень
                         fighter.Damage += (int)Math.Round(fighter.Damage * 0.05 * level);
+                        fighter.HP += (int)Math.Round(fighter.HP * 0.05 * level);
                         break;
 
                     case AchievementType.CriticalMaster:
-                        // За каждый уровень ачивки увеличиваем Critical на (3 * level)% от текущего значения
-                        fighter.Critical += (int)Math.Round(fighter.Critical * 0.03 * level);
+                        // За каждый уровень ачивки увеличиваем Critical на (5 * level)% от текущего значения
+                        fighter.Critical += (int)Math.Round(fighter.Critical * 0.1 * level);
+                        fighter.CriticalPower += (int)Math.Round(fighter.CriticalPower * 0.05 * level);
                         break;
 
                     case AchievementType.PatientStriker:
-                        // Увеличение HP на 2% за уровень
-                        fighter.HP += (int)Math.Round(fighter.HPMax * 0.02 * level);
-                        fighter.HPMax += (int)Math.Round(fighter.HPMax * 0.02 * level);
+                        // Увеличение HP на 5% и урон на 10% за уровень
+                        fighter.HPMax += (int)Math.Round(fighter.HPMax * 0.15 * level);
+                        fighter.Damage += (int)Math.Round(fighter.Damage * 0.015 * level);
+                        fighter.AntiCritical += (int)Math.Round(fighter.AntiCritical * 0.015 * level);
                         break;
 
                     case AchievementType.LastSurvivor:
                         // Бонус к HP за каждый уровень
-                        fighter.HP += (int)Math.Round(fighter.HPMax * 0.1 * level);
                         fighter.HPMax += (int)Math.Round(fighter.HPMax * 0.1 * level);
                         break;
 
                     case AchievementType.Dominator:
                         // Увеличение HP и Damage на 5% за уровень
-                        fighter.HP += (int)Math.Round(fighter.HPMax * 0.05 * level);
                         fighter.HPMax += (int)Math.Round(fighter.HPMax * 0.05 * level);
                         fighter.Damage += (int)Math.Round(fighter.Damage * 0.05 * level);
                         break;
 
-                        //case AchievementType.Unflinching:
-                        //    // Увеличение уклонения на 2% за уровень
-                        //    fighter.Dodge += 2 * level;
-                        //    break;
+                    case AchievementType.DodgeMaster:
+                        // Увеличение уклонения на 10% и урон на 5% за уровень
+                        fighter.Dodge += (int)Math.Round(fighter.Dodge * 0.1 * level);
+                        fighter.Damage += (int)Math.Round(fighter.Damage * 0.05 * level);
+                        break;
+                    case AchievementType.BrokenFocus:
+                        // Увеличение уклонения на 10% и урон на 5% за уровень
+                        fighter.AntiDodge += (int)Math.Round(fighter.AntiDodge * 0.1 * level);
+                        break;
+                    case AchievementType.CritBreaker:
+                        // Увеличение уклонения на 10% и урон на 5% за уровень
+                        fighter.AntiDodge += (int)Math.Round(fighter.AntiCritical * 0.05 * level);
+                        fighter.HP += (int)Math.Round(fighter.HP * 0.05 * level);
+                        break;
                 }
             }
 

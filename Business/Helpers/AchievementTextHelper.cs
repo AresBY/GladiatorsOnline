@@ -11,19 +11,26 @@ public static class AchievementTextHelper
         return achievement.Type switch
         {
             AchievementType.Veteran =>
-                string.Format(AchievementDescriptions.Veteran, level, level * 5),
+                string.Format(AchievementDescriptions.Veteran, level, level * 5, level * 5),
 
             AchievementType.CriticalMaster =>
-                string.Format(AchievementDescriptions.CriticalMaster, level, level * 3),
+                string.Format(AchievementDescriptions.CriticalMaster, level, level * 10, level * 5),
 
             AchievementType.PatientStriker =>
-                string.Format(AchievementDescriptions.PatientStriker, level, level * 2),
+                string.Format(AchievementDescriptions.PatientStriker, level, level * 15, level * 15, level * 15),
 
             AchievementType.LastSurvivor =>
                 string.Format(AchievementDescriptions.LastSurvivor, level, level * 10),
 
             AchievementType.Dominator =>
                 string.Format(AchievementDescriptions.Dominator, level, level * 5, level * 5),
+
+            AchievementType.DodgeMaster =>
+                string.Format(AchievementDescriptions.DodgeMaster, level, level * 10, level * 5),
+            AchievementType.BrokenFocus =>
+                string.Format(AchievementDescriptions.BrokenFocus, level, level * 10),
+            AchievementType.CritBreaker =>
+                string.Format(AchievementDescriptions.CritBreaker, level, level * 5, level * 5),
 
             _ => string.Empty
         };

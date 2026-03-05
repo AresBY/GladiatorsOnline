@@ -17,6 +17,7 @@ namespace Gladiators.Business.Mapping
                 Dexterity = entity.Dexterity,
                 Intuition = entity.Intuition,
                 Stamina = entity.Stamina,
+                Weight = entity.Weight,
                 Wins = entity.Wins
             };
 
@@ -56,6 +57,7 @@ namespace Gladiators.Business.Mapping
                 Dexterity = dto.Dexterity,
                 Intuition = dto.Intuition,
                 Stamina = dto.Stamina,
+                Weight = dto.Weight,
                 Wins = dto.Wins
             };
 

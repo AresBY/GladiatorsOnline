@@ -61,11 +61,38 @@ namespace Gladiators.Business.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Critical Master (Ур. {0})\nЗа что: Сделал 3 критических удара подряд\nЧто даёт: +{1}% к шанс крит. удара.
+        ///   Looks up a localized string similar to BrokenFocus (Ур. {0})\nЗа что: За промах четырежды подряд\nЧто даёт: +{1}% к антиувароту.
+        /// </summary>
+        internal static string BrokenFocus {
+            get {
+                return ResourceManager.GetString("BrokenFocus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to CritBreaker (Ур. {0})\nЗа что: Получил критический урон дважды подряд\nЧто даёт: +{1}% к антикриту и +{2}% к ХП.
+        /// </summary>
+        internal static string CritBreaker {
+            get {
+                return ResourceManager.GetString("CritBreaker", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Critical Master (Ур. {0})\nЗа что: Сделал 2 критических удара подряд\nЧто даёт: +{1}% к шанс крит. удара и +{2}% к мощности крита.
         /// </summary>
         internal static string CriticalMaster {
             get {
                 return ResourceManager.GetString("CriticalMaster", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to DodgeMaster (Ур. {0})\nЗа что: Увернулся трижды подряд\nЧто даёт: +{1}% к шансу увернуться +{2}% к урону.
+        /// </summary>
+        internal static string DodgeMaster {
+            get {
+                return ResourceManager.GetString("DodgeMaster", resourceCulture);
             }
         }
         
@@ -79,7 +106,7 @@ namespace Gladiators.Business.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Last Survivor (Ур. {0})\nЗа что: Выжил с HP &lt; 10%\nЧто даёт: +{1}% к HP.
+        ///   Looks up a localized string similar to Last Survivor (Ур. {0})\nЗа что: Выжил с HP &lt; 20%\nЧто даёт: +{1}% к HP.
         /// </summary>
         internal static string LastSurvivor {
             get {
@@ -88,7 +115,7 @@ namespace Gladiators.Business.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Patient Striker (Ур. {0})\nЗа что: Не использовал критические удары\nЧто даёт: +{1}% к HP .
+        ///   Looks up a localized string similar to Patient Striker (Ур. {0})\nЗа что: Не использовал криты весь бой\nЧто даёт: +{1}% к HP .+{2}% к урону и +{3}% к антикриту.
         /// </summary>
         internal static string PatientStriker {
             get {
@@ -97,7 +124,7 @@ namespace Gladiators.Business.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Veteran (Ур. {0})\nЗа что: За победы в боях\nЧто даёт: +{1}% к урону.
+        ///   Looks up a localized string similar to Veteran (Ур. {0})\nЗа что: За победы в боях\nЧто даёт: +{1}% к урону и +{2}% к HP.
         /// </summary>
         internal static string Veteran {
             get {

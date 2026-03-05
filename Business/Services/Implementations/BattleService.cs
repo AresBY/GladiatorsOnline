@@ -26,6 +26,13 @@ namespace Gladiators.Business.Services.Implementations
             if (firstSlaveEntity == null || secondSlaveEntity == null)
                 throw new Exception("One or both gladiators not found");
 
+            if (firstSlaveEntity.Weight > secondSlaveEntity.Weight)
+            {
+                var temp = firstSlaveEntity;
+                firstSlaveEntity = secondSlaveEntity;
+                secondSlaveEntity = temp;
+            }
+
             var firstFighter = await _fighterFactory.Create(firstSlaveEntity);
             var secondFighter = await _fighterFactory.Create(secondSlaveEntity);
 

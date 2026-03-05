@@ -27,8 +27,14 @@ namespace Gladiators.Business.Services.Implementations
             int remainingHP = winner.MaxHP;
 
             int critStreak = 0;
-            bool threeCritsInRow = false;
+            int dodgeStreak = 0;
+            int missStreak = 0;
+            int critStreakOnMe = 0;
+            bool twoCritsInRow = false;
+            bool twoCritsInRowOnMe = false;
+            bool fourDodgeInRow = false;
             bool anyCrit = false;
+            bool threeMissInRow = false;
 
             var rounds = battle.BattleRounds;
 
@@ -41,19 +47,69 @@ namespace Gladiators.Business.Services.Implementations
 
                 var round = rounds[i];
 
-                if (isWinnerTurn && !threeCritsInRow)
+                if (isWinnerTurn)
                 {
-                    if (round.Critical)
+                    if (!twoCritsInRow)
                     {
-                        critStreak++;
-                        anyCrit = true;
+                        if (round.Critical)
+                        {
+                            critStreak++;
+                            anyCrit = true;
 
-                        if (critStreak > 2)
-                            threeCritsInRow = true;
+                            if (critStreak > 1)
+                                twoCritsInRow = true;
+                        }
+                        else
+                        {
+                            critStreak = 0;
+                        }
                     }
-                    else
+
+                    if (!threeMissInRow)
                     {
-                        critStreak = 0;
+                        if (round.Missed)
+                        {
+                            missStreak++;
+                            if (missStreak > 2)
+                                threeMissInRow = true;
+                        }
+                        else
+                        {
+                            missStreak = 0;
+                        }
+                    }
+                }
+
+                if (!isWinnerTurn)
+                {
+                    if (!fourDodgeInRow)
+                    {
+                        if (round.Missed)
+                        {
+                            dodgeStreak++;
+
+
+                            if (dodgeStreak > 3)
+                                fourDodgeInRow = true;
+                        }
+                        else
+                        {
+                            dodgeStreak = 0;
+                        }
+                    }
+                    if (!twoCritsInRowOnMe)
+                    {
+                        if (round.Critical)
+                        {
+                            critStreakOnMe++;
+
+                            if (critStreakOnMe > 1)
+                                twoCritsInRowOnMe = true;
+                        }
+                        else
+                        {
+                            critStreakOnMe = 0;
+                        }
                     }
                 }
 
@@ -64,10 +120,13 @@ namespace Gladiators.Business.Services.Implementations
 
             remainingHP = Math.Max(remainingHP, 0);
 
-            bool lastSurvivor = remainingHP > 0 && remainingHP < winner.MaxHP * 0.1;
+            bool lastSurvivor = remainingHP > 0 && remainingHP < winner.MaxHP * 0.2;
             bool dominator = remainingHP > winner.MaxHP * 0.8;
             bool patientStriker = !anyCrit;
-            bool criticalMaster = threeCritsInRow;
+            bool criticalMaster = twoCritsInRow;
+            bool dodgeMaster = fourDodgeInRow;
+            bool brokenFocus = threeMissInRow;
+            bool critBreaker = twoCritsInRowOnMe;
 
             var existingAchievements =
                 await _achievementRepo.GetByPlayersSlaveIdAsync(winner.Id);
@@ -110,6 +169,9 @@ namespace Gladiators.Business.Services.Implementations
             await ProcessAchievement(AchievementType.Dominator, dominator);
             await ProcessAchievement(AchievementType.PatientStriker, patientStriker);
             await ProcessAchievement(AchievementType.CriticalMaster, criticalMaster);
+            await ProcessAchievement(AchievementType.DodgeMaster, dodgeMaster);
+            await ProcessAchievement(AchievementType.BrokenFocus, brokenFocus);
+            await ProcessAchievement(AchievementType.CritBreaker, critBreaker);
 
             return updatedAchievements;
         }
