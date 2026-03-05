@@ -1,4 +1,5 @@
 ﻿using Gladiators.Business.DTOs;
+using Gladiators.Business.Factories;
 using Gladiators.Business.Mapping;
 using Gladiators.Business.Services.Interfaces;
 using Gladiators.Data.Entities;
@@ -9,10 +10,12 @@ namespace Gladiators.Business.Services.Implementations
     public class PlayerSlaveService : IPlayerSlaveService
     {
         private readonly IPlayerSlaveRepository _playerSlaveRepo;
+        private readonly FighterFactory _fighterFactory;
 
-        public PlayerSlaveService(IPlayerSlaveRepository playerSlaveRepo)
+        public PlayerSlaveService(IPlayerSlaveRepository playerSlaveRepo, FighterFactory fighterFactory)
         {
             _playerSlaveRepo = playerSlaveRepo;
+            _fighterFactory = fighterFactory;
         }
 
         // Удаление
@@ -37,10 +40,21 @@ namespace Gladiators.Business.Services.Implementations
         // Получить одного
         public async Task<PlayersSlave> GetAsync(Guid id)
         {
-            var player = await _playerSlaveRepo.GetAsync(id);
-            if (player == null)
+            var slave = await _playerSlaveRepo.GetAsync(id);
+            if (slave == null)
                 throw new KeyNotFoundException($"Player with id {id} not found.");
-            return player;
+            return slave;
+        }
+
+        public async Task<FighterDetailDto> GetDetailAsync(Guid id)
+        {
+            var slave = await _playerSlaveRepo.GetAsync(id);
+            if (slave == null)
+                throw new KeyNotFoundException($"PlayerSlave with id {id} not found.");
+
+            var fighter = await _fighterFactory.Create(slave);
+
+            return fighter.ToDetailDto(slave);
         }
 
         // Обновление

@@ -12,6 +12,7 @@ namespace Gladiators.Business.Mapping
             var dto = new TDto
             {
                 Id = entity.Id,
+                PortraitID = entity.PortraitID,
                 Name = entity.Name,
                 Strength = entity.Strength,
                 Dexterity = entity.Dexterity,
@@ -52,6 +53,7 @@ namespace Gladiators.Business.Mapping
             var entity = new TEntity
             {
                 Id = dto.Id,
+                PortraitID = dto.PortraitID,
                 Name = dto.Name,
                 Strength = dto.Strength,
                 Dexterity = dto.Dexterity,
@@ -73,6 +75,41 @@ namespace Gladiators.Business.Mapping
             }
 
             return entity;
+        }
+
+        public static FighterDetailDto ToDetailDto(this Fighter fighter, PlayersSlave slave)
+        {
+            return new FighterDetailDto
+            {
+                Id = slave.Id,
+                PortraitID = slave.PortraitID,
+                Name = slave.Name,
+                Strength = slave.Strength,
+                Dexterity = slave.Dexterity,
+                Intuition = slave.Intuition,
+                Stamina = slave.Stamina,
+                Weight = slave.Weight,
+                Wins = slave.Wins,
+
+                Achievements = slave.Achievements
+                    .Select(a => new AchievementDto
+                    {
+                        Id = a.Id,
+                        Type = a.Type,
+                        Level = a.Level,
+                        Description = AchievementTextHelper.GetTooltipText(a)
+                    })
+                    .ToList(),
+
+                Damage = fighter.Damage,
+                Dodge = fighter.Dodge,
+                AntiDodge = fighter.AntiDodge,
+                Critical = fighter.Critical,
+                CriticalPower = fighter.CriticalPower,
+                AntiCritical = fighter.AntiCritical,
+                HP = fighter.HP,
+                HPMax = fighter.HPMax
+            };
         }
     }
 }

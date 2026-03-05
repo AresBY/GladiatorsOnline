@@ -46,7 +46,7 @@ namespace Gladiators.Business.Factories
                     case AchievementType.Veteran:
                         // Увеличение урона на 5% за уровень
                         fighter.Damage += (int)Math.Round(fighter.Damage * 0.05 * level);
-                        fighter.HP += (int)Math.Round(fighter.HP * 0.05 * level);
+                        fighter.HPMax += (int)Math.Round(fighter.HPMax * 0.05 * level);
                         break;
 
                     case AchievementType.CriticalMaster:
@@ -85,7 +85,7 @@ namespace Gladiators.Business.Factories
                     case AchievementType.CritBreaker:
                         // Увеличение уклонения на 10% и урон на 5% за уровень
                         fighter.AntiDodge += (int)Math.Round(fighter.AntiCritical * 0.05 * level);
-                        fighter.HP += (int)Math.Round(fighter.HP * 0.05 * level);
+                        fighter.HPMax += (int)Math.Round(fighter.HPMax * 0.05 * level);
                         break;
                 }
             }

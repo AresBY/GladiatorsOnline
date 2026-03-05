@@ -72,7 +72,6 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 // ---------- DI: Services ----------
 builder.Services.AddScoped<IAuthService, AuthService>();
-builder.Services.AddScoped<IGladiatorService, GladiatorService>();
 builder.Services.AddScoped<IMarketSlaveService, MarketSlaveService>();
 builder.Services.AddScoped<IPlayerSlaveService, PlayerSlaveService>();
 builder.Services.AddScoped<ISlaveGenerator, SlaveGenerator>();
@@ -85,7 +84,6 @@ builder.Services.AddScoped<FighterFactory>();
 
 // ---------- DI: Repositories ----------
 builder.Services.AddScoped<IUserRepository, UserRepository>();
-builder.Services.AddScoped<IGladiatorRepository, GladiatorRepository>();
 builder.Services.AddScoped<IMarketSlaveRepository, MarketSlaveRepository>();
 builder.Services.AddScoped<IPlayerSlaveRepository, PlayerSlaveRepository>();
 builder.Services.AddScoped<IAchievementRepository, AchievementRepository>();

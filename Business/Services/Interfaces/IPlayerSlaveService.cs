@@ -8,6 +8,7 @@ namespace Gladiators.Business.Services.Interfaces
         Task DeleteAsync(Guid slaveId);
         Task<IEnumerable<PlayersSlaveDto>> GetAllAsync(Guid playerId);
         Task<PlayersSlave> GetAsync(Guid id);
+        Task<FighterDetailDto> GetDetailAsync(Guid id);
         Task UpdateAsync(PlayersSlave slave);
     }
 }

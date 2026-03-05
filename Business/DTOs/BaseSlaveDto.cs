@@ -3,6 +3,7 @@
     public class BaseSlaveDto
     {
         public Guid Id { get; set; }
+        public int PortraitID { get; set; }
         public string Name { get; set; } = null!;
         public int Strength { get; set; }
         public int Dexterity { get; set; }

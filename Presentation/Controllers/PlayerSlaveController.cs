@@ -36,6 +36,17 @@ namespace Gladiators.Presentation.Controllers
             return Ok(slave.ToDto<PlayersSlaveDto>());
         }
 
+
+        [HttpGet("{id:guid}/detail")]
+        public async Task<IActionResult> GetDetailAsync(Guid id)
+        {
+            var slave = await _playerService.GetDetailAsync(id);
+            if (slave == null)
+                return NotFound();
+
+            return Ok(slave);
+        }
+
         // Обновить
         [HttpPut("{id:guid}")]
         public async Task<IActionResult> Update(Guid id, [FromBody] PlayersSlaveDto dto)
