@@ -95,7 +95,7 @@ namespace Gladiators.Business.Services.Implementations
             else
                 secondSlave.IsWinner = true;
 
-            var achives = await _achievementService.AwardLastSurvivorIfNeededAsync(battle);
+            var achives = await _achievementService.AwardAchivesIfNeededAsync(battle);
             return battle;
         }
     }

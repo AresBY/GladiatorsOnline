@@ -9,6 +9,10 @@
         Dominator,           // Выигрыш с HP > 80%
         DodgeMaster,
         BrokenFocus,
-        CritBreaker
+        CritBreaker,
+        StrengthBonus,
+        DexterityBonus,
+        IntuitionBonus,
+        StaminaBonus
     }
 }

@@ -27,12 +27,28 @@ public static class AchievementTextHelper
 
             AchievementType.DodgeMaster =>
                 string.Format(AchievementDescriptions.DodgeMaster, level, level * 10, level * 5),
+
             AchievementType.BrokenFocus =>
                 string.Format(AchievementDescriptions.BrokenFocus, level, level * 10),
+
             AchievementType.CritBreaker =>
                 string.Format(AchievementDescriptions.CritBreaker, level, level * 5, level * 5),
+
+            AchievementType.StrengthBonus =>
+                string.Format(AchievementDescriptions.StrengthBonus, level, level * 15),
+
+            AchievementType.DexterityBonus =>
+                string.Format(AchievementDescriptions.DexterityBonus, level, level * 15, level * 15),
+
+            AchievementType.IntuitionBonus =>
+                string.Format(AchievementDescriptions.IntuitionBonus, level, level * 15, level * 15),
+
+            AchievementType.StaminaBonus =>
+                string.Format(AchievementDescriptions.StaminaBonus, level, level * 15),
 
             _ => string.Empty
         };
     }
 }
+
+

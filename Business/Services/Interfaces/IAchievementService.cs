@@ -4,7 +4,11 @@ namespace Gladiators.Business.Services.Interfaces
 {
     public interface IAchievementService
     {
-        Task<List<Achievement>> AwardLastSurvivorIfNeededAsync(Battle battle);
-        Task<List<Achievement>> GetAchievementsAsync(Guid playersSlave);
+        Task<List<Achievement>> AwardAchivesIfNeededAsync(Battle battle);
+        Task UpdateStatsAchivsAsync(Guid playersSlaveId);
+        Task<List<Achievement>> GetAsync(Guid playersSlave);
+        Task AddAsync(Achievement achievement);
+        Task UpdateAsync(Achievement achievement);
+        Task DeleteAsync(Guid achievementId);
     }
 }

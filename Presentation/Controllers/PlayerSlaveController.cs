@@ -10,18 +10,18 @@ namespace Gladiators.Presentation.Controllers
     [ApiController]
     public class PlayerSlaveController : ControllerBase
     {
-        private readonly IPlayerSlaveService _playerService;
+        private readonly IPlayerSlaveService _playerSlaveService;
 
         public PlayerSlaveController(IPlayerSlaveService playerService)
         {
-            _playerService = playerService;
+            _playerSlaveService = playerService;
         }
 
         // Получить всех
         [HttpGet]
         public async Task<IActionResult> GetAll(Guid playerId)
         {
-            var result = await _playerService.GetAllAsync(playerId);
+            var result = await _playerSlaveService.GetAllAsync(playerId);
             return Ok(result);
         }
 
@@ -29,7 +29,7 @@ namespace Gladiators.Presentation.Controllers
         [HttpGet("{id:guid}")]
         public async Task<IActionResult> Get(Guid id)
         {
-            var slave = await _playerService.GetAsync(id);
+            var slave = await _playerSlaveService.GetAsync(id);
             if (slave == null)
                 return NotFound();
 
@@ -40,7 +40,7 @@ namespace Gladiators.Presentation.Controllers
         [HttpGet("{id:guid}/detail")]
         public async Task<IActionResult> GetDetailAsync(Guid id)
         {
-            var slave = await _playerService.GetDetailAsync(id);
+            var slave = await _playerSlaveService.GetDetailAsync(id);
             if (slave == null)
                 return NotFound();
 
@@ -51,11 +51,11 @@ namespace Gladiators.Presentation.Controllers
         [HttpPut("{id:guid}")]
         public async Task<IActionResult> Update(Guid id, [FromBody] PlayersSlaveDto dto)
         {
-            var slave = await _playerService.GetAsync(id);
+            var slave = await _playerSlaveService.GetAsync(id);
             if (slave == null)
                 return NotFound();
 
-            await _playerService.UpdateAsync(dto.ToEntity<PlayersSlave>());
+            await _playerSlaveService.UpdateAsync(dto.ToEntity<PlayersSlave>());
 
             return NoContent();
         }
@@ -64,12 +64,36 @@ namespace Gladiators.Presentation.Controllers
         [HttpDelete("{id:guid}")]
         public async Task<IActionResult> Delete(Guid id)
         {
-            var slave = await _playerService.GetAsync(id);
+            var slave = await _playerSlaveService.GetAsync(id);
             if (slave == null)
                 return NotFound();
 
-            await _playerService.DeleteAsync(id);
+            await _playerSlaveService.DeleteAsync(id);
             return NoContent();
+        }
+
+        /// <summary>
+        /// Увеличить Intuition раба на 10
+        /// </summary>
+        [HttpPost("{playerSlaveId}/add-ten-intuition")]
+        public async Task<IActionResult> AddTenIntuition(Guid playerSlaveId)
+        {
+            if (playerSlaveId == Guid.Empty)
+                return BadRequest("playerSlaveId не может быть пустым");
+
+            var slave = await _playerSlaveService.GetAsync(playerSlaveId);
+            if (slave == null)
+                return NotFound($"Раб с Id {playerSlaveId} не найден");
+
+            // Увеличиваем Intuition на 10
+            slave.Intuition += 10;
+
+            // Сохраняем изменения
+            await _playerSlaveService.UpdateAsync(slave);
+
+            //await UpdateStatsAchivsAsync
+
+            return Ok(new { slaveId = playerSlaveId, newIntuition = slave.Intuition });
         }
     }
 }

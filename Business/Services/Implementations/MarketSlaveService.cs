@@ -11,13 +11,16 @@ namespace Gladiators.Business.Services.Implementations
         private readonly IMarketSlaveRepository _marketRepo;
         private readonly IPlayerSlaveRepository _playerSlaveRepo;
         private readonly ISlaveGenerator _slaveGenerator;
+        private readonly IAchievementService _achievementService;
         private readonly Random _rnd = new();
 
-        public MarketSlaveService(IPlayerSlaveRepository playerSlaveRepo, IMarketSlaveRepository marketRepo, ISlaveGenerator slaveGenerator)
+        public MarketSlaveService(IPlayerSlaveRepository playerSlaveRepo, IMarketSlaveRepository marketRepo,
+            ISlaveGenerator slaveGenerator, IAchievementService achievementService)
         {
             _playerSlaveRepo = playerSlaveRepo;
             _marketRepo = marketRepo;
             _slaveGenerator = slaveGenerator;
+            _achievementService = achievementService;
         }
 
         // Получить всех доступных рабов для игрока
@@ -53,7 +56,11 @@ namespace Gladiators.Business.Services.Implementations
 
             await _marketRepo.DeleteAsync(marketSlave);
 
-            return await _playerSlaveRepo.AddAsync(playersSlave);
+            var result = await _playerSlaveRepo.AddAsync(playersSlave);
+
+            await _achievementService.UpdateStatsAchivsAsync(marketSlaveId);
+
+            return result;
         }
     }
 }

@@ -8,18 +8,21 @@ namespace Gladiators.Business.Services.Implementations
     public class AchievementService : IAchievementService
     {
         private readonly IAchievementRepository _achievementRepo;
+        private readonly IPlayerSlaveRepository _playerSlaveRepository;
 
-        public AchievementService(IAchievementRepository achievementRepo)
+        public AchievementService(IAchievementRepository achievementRepo,
+            IPlayerSlaveRepository playerSlaveRepository)
         {
             _achievementRepo = achievementRepo;
+            _playerSlaveRepository = playerSlaveRepository;
         }
 
-        public async Task<List<Achievement>> GetAchievementsAsync(Guid playersSlaveId)
+        public async Task<List<Achievement>> GetAsync(Guid playersSlaveId)
         {
             return await _achievementRepo.GetByPlayersSlaveIdAsync(playersSlaveId);
         }
 
-        public async Task<List<Achievement>> AwardLastSurvivorIfNeededAsync(Battle battle)
+        public async Task<List<Achievement>> AwardAchivesIfNeededAsync(Battle battle)
         {
             // Определяем победителя
             var winner = battle.FirstFighter.IsWinner ? battle.FirstFighter : battle.SecondFighter;
@@ -174,6 +177,80 @@ namespace Gladiators.Business.Services.Implementations
             await ProcessAchievement(AchievementType.CritBreaker, critBreaker);
 
             return updatedAchievements;
+        }
+
+        public async Task AddAsync(Achievement achievement)
+        {
+            if (achievement == null)
+                throw new ArgumentNullException(nameof(achievement));
+
+            await _achievementRepo.AddAsync(achievement);
+        }
+        public async Task UpdateAsync(Achievement achievement)
+        {
+            if (achievement == null)
+                throw new ArgumentNullException(nameof(achievement));
+
+            await _achievementRepo.UpdateAsync(achievement);
+        }
+        public async Task DeleteAsync(Guid achievementId)
+        {
+            var achievement = await _achievementRepo.GetByIdAsync(achievementId);
+            if (achievement != null)
+            {
+                await _achievementRepo.DeleteAsync(achievement);
+            }
+        }
+        public async Task UpdateStatsAchivsAsync(Guid playersSlaveId)
+        {
+            var slave = await _playerSlaveRepository.GetAsync(playersSlaveId);
+            if (slave != null)
+            {
+                var achives = await GetAsync(playersSlaveId);
+                var statsToAchievement = new Dictionary<AchievementType, int>
+                {
+                    { AchievementType.StrengthBonus, slave.Strength },
+                    { AchievementType.DexterityBonus, slave.Dexterity },
+                    { AchievementType.IntuitionBonus, slave.Intuition },
+                    { AchievementType.StaminaBonus, slave.Stamina }
+                };
+
+                foreach (var (achievementType, statValue) in statsToAchievement)
+                {
+                    int newLevel = 0;
+
+                    if (statValue >= 75)
+                        newLevel = 2;
+                    else if (statValue >= 50)
+                        newLevel = 1;
+
+                    var existingAchievement = achives.FirstOrDefault(a => a.Type == achievementType);
+
+                    if (existingAchievement != null)
+                    {
+                        if (newLevel == 0)
+                        {
+                            await DeleteAsync(existingAchievement.Id);
+                        }
+                        else if (existingAchievement.Level != newLevel)
+                        {
+                            existingAchievement.Level = newLevel;
+                            await UpdateAsync(existingAchievement);
+                        }
+                    }
+                    else if (newLevel > 0)
+                    {
+                        var achievement = new Achievement
+                        {
+                            Id = Guid.NewGuid(),
+                            PlayerSlaveId = slave.Id,
+                            Type = achievementType,
+                            Level = newLevel
+                        };
+                        await AddAsync(achievement);
+                    }
+                }
+            }
         }
     }
 }

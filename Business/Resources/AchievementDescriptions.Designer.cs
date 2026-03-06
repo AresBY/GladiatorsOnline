@@ -88,6 +88,15 @@ namespace Gladiators.Business.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to DexterityBonus  (Ур. {0})\nЗа что:  За очки ловкости\nЧто даёт: +{1}% к увароту и +{2}% к антиувароту.
+        /// </summary>
+        internal static string DexterityBonus {
+            get {
+                return ResourceManager.GetString("DexterityBonus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to DodgeMaster (Ур. {0})\nЗа что: Увернулся трижды подряд\nЧто даёт: +{1}% к шансу увернуться +{2}% к урону.
         /// </summary>
         internal static string DodgeMaster {
@@ -106,6 +115,15 @@ namespace Gladiators.Business.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to IntuitionBonus  (Ур. {0})\n За что: За очки  интуиции\nЧто даёт: +{1}% к криту и +{2}% к антикриту.
+        /// </summary>
+        internal static string IntuitionBonus {
+            get {
+                return ResourceManager.GetString("IntuitionBonus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Last Survivor (Ур. {0})\nЗа что: Выжил с HP &lt; 20%\nЧто даёт: +{1}% к HP.
         /// </summary>
         internal static string LastSurvivor {
@@ -120,6 +138,24 @@ namespace Gladiators.Business.Resources {
         internal static string PatientStriker {
             get {
                 return ResourceManager.GetString("PatientStriker", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to StaminaBonus  (Ур. {0})\nЗа что: За очки выносливости\nЧто даёт: +{1}% к ХП.
+        /// </summary>
+        internal static string StaminaBonus {
+            get {
+                return ResourceManager.GetString("StaminaBonus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to StrengthBonus  (Ур. {0})\nЗа что: За очки силы\nЧто даёт: +{1}% к урону.
+        /// </summary>
+        internal static string StrengthBonus {
+            get {
+                return ResourceManager.GetString("StrengthBonus", resourceCulture);
             }
         }
         

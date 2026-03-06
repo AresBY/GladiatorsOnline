@@ -19,5 +19,11 @@ namespace Gladiators.Data.Repository.Implementations
                 .Where(a => a.PlayerSlaveId == playersSlaveId)
                 .ToListAsync();
         }
+        public async Task<Achievement?> GetByIdAsync(Guid achievementId)
+        {
+            return await _context.Achievements
+                .Where(a => a.Id == achievementId)
+                .FirstOrDefaultAsync();
+        }
     }
 }

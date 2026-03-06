@@ -17,7 +17,9 @@ namespace Gladiators.Business.Factories
             if (slave == null)
                 throw new ArgumentNullException(nameof(slave));
 
-            var achives = await _achievementService.GetAchievementsAsync(slave.Id);
+            await _achievementService.UpdateStatsAchivsAsync(slave.Id);
+
+            var achives = await _achievementService.GetAsync(slave.Id);
 
             var fighter = new Fighter
             {
@@ -87,10 +89,24 @@ namespace Gladiators.Business.Factories
                         fighter.AntiDodge += (int)Math.Round(fighter.AntiCritical * 0.05 * level);
                         fighter.HPMax += (int)Math.Round(fighter.HPMax * 0.05 * level);
                         break;
+                    case AchievementType.StrengthBonus:
+                        fighter.Damage += (int)Math.Round(fighter.Damage * 0.15 * level);
+                        break;
+                    case AchievementType.DexterityBonus:
+                        fighter.Dodge += (int)Math.Round(fighter.Dodge * 0.15 * level);
+                        fighter.AntiDodge += (int)Math.Round(fighter.AntiDodge * 0.15 * level);
+                        break;
+                    case AchievementType.IntuitionBonus:
+                        fighter.Critical += (int)Math.Round(fighter.Critical * 0.15 * level);
+                        fighter.AntiCritical += (int)Math.Round(fighter.AntiCritical * 0.15 * level);
+                        break;
+                    case AchievementType.StaminaBonus:
+                        fighter.HPMax += (int)Math.Round(fighter.HPMax * 0.15 * level);
+                        break;
                 }
             }
-
             return fighter;
         }
     }
 }
+
