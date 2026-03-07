@@ -72,28 +72,24 @@ namespace Gladiators.Presentation.Controllers
             return NoContent();
         }
 
-        /// <summary>
-        /// Увеличить Intuition раба на 10
-        /// </summary>
-        [HttpPost("{playerSlaveId}/add-ten-intuition")]
-        public async Task<IActionResult> AddTenIntuition(Guid playerSlaveId)
+        [HttpPost("{playerSlaveId}/add-stat")]
+        public async Task<IActionResult> AddStats(Guid playerSlaveId, [FromBody] AddStatRequest request)
         {
             if (playerSlaveId == Guid.Empty)
                 return BadRequest("playerSlaveId не может быть пустым");
 
-            var slave = await _playerSlaveService.GetAsync(playerSlaveId);
-            if (slave == null)
-                return NotFound($"Раб с Id {playerSlaveId} не найден");
+            if (request == null)
+                return BadRequest("Request body не может быть пустым");
 
-            // Увеличиваем Intuition на 10
-            slave.Intuition += 10;
+            const int amount = 10;
 
-            // Сохраняем изменения
-            await _playerSlaveService.UpdateAsync(slave);
+            await _playerSlaveService.AddStatsAsync(playerSlaveId, request.StatType, amount);
 
-            //await UpdateStatsAchivsAsync
-
-            return Ok(new { slaveId = playerSlaveId, newIntuition = slave.Intuition });
+            return Ok(new
+            {
+                slaveId = playerSlaveId,
+                statType = request.StatType
+            });
         }
     }
 }
