@@ -28,7 +28,9 @@ namespace Gladiators.Business.Services.Implementations
                 slave.Price = rnd.Next(1, 5);
                 slave.Weight = rnd.Next(50, 120);
 
-                int totalPoints = 140 / 4;
+                int minTotal = 140;
+                int maxTotal = 160;
+                int totalPoints = rnd.Next(minTotal / 4, maxTotal / 4 + 1);
                 for (int j = 0; j < totalPoints; j++)
                 {
                     int stat = rnd.Next(0, 4);

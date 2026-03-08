@@ -218,8 +218,9 @@ namespace Gladiators.Business.Services.Implementations
                 foreach (var (achievementType, statValue) in statsToAchievement)
                 {
                     int newLevel = 0;
-
-                    if (statValue >= 75)
+                    if (statValue >= 100)
+                        newLevel = 3;
+                    else if (statValue >= 75)
                         newLevel = 2;
                     else if (statValue >= 50)
                         newLevel = 1;

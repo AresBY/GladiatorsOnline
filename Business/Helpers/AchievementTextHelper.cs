@@ -17,7 +17,7 @@ public static class AchievementTextHelper
                 string.Format(AchievementDescriptions.CriticalMaster, level, level * 10, level * 5),
 
             AchievementType.PatientStriker =>
-                string.Format(AchievementDescriptions.PatientStriker, level, level * 15, level * 15, level * 15),
+                string.Format(AchievementDescriptions.PatientStriker, level, level * 10, level * 10, level * 10),
 
             AchievementType.LastSurvivor =>
                 string.Format(AchievementDescriptions.LastSurvivor, level, level * 10),

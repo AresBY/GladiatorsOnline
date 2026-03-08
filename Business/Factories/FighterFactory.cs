@@ -59,9 +59,9 @@ namespace Gladiators.Business.Factories
 
                     case AchievementType.PatientStriker:
                         // Увеличение HP на 5% и урон на 10% за уровень
-                        fighter.HPMax += (int)Math.Round(fighter.HPMax * 0.15 * level);
-                        fighter.Damage += (int)Math.Round(fighter.Damage * 0.015 * level);
-                        fighter.AntiCritical += (int)Math.Round(fighter.AntiCritical * 0.015 * level);
+                        fighter.HPMax += (int)Math.Round(fighter.HPMax * 0.10 * level);
+                        fighter.Damage += (int)Math.Round(fighter.Damage * 0.010 * level);
+                        fighter.AntiCritical += (int)Math.Round(fighter.AntiCritical * 0.010 * level);
                         break;
 
                     case AchievementType.LastSurvivor:
