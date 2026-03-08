@@ -133,7 +133,7 @@ namespace Gladiators.Business.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to LudusChampion )\nЗа что: Прихоть господина\nЧто даёт: +{1}% ко всем характеристикам и иммунитет к смерти.
+        ///   Looks up a localized string similar to LudusChampion \nЗа что: Прихоть господина\nЧто даёт: +{1}% ко всем характеристикам и иммунитет к смерти.
         /// </summary>
         internal static string LudusChampion {
             get {
