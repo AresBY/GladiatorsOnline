@@ -60,16 +60,13 @@ namespace Gladiators.Presentation.Controllers
             return NoContent();
         }
 
-        // Удалить
         [HttpDelete("{id:guid}")]
         public async Task<IActionResult> Delete(Guid id)
         {
-            var slave = await _playerSlaveService.GetAsync(id);
-            if (slave == null)
-                return NotFound();
-
-            await _playerSlaveService.DeleteAsync(id);
-            return NoContent();
+            var isDeleted = await _playerSlaveService.DeleteAsync(id);
+            return isDeleted
+                ? Ok(new { isDeleted = true })
+                : BadRequest(new { isDeleted = false, message = "Cannot delete champion or slave not found." });
         }
 
         [HttpPost("{playerSlaveId}/add-stat")]
@@ -90,6 +87,22 @@ namespace Gladiators.Presentation.Controllers
                 slaveId = playerSlaveId,
                 statType = request.StatType
             });
+        }
+
+        [HttpPost("makeChampion")]
+        public async Task<IActionResult> MakeChampion([FromBody] MakeChampionRequest request)
+        {
+            if (request == null)
+                return BadRequest(new { message = "Request body is required." });
+
+            if (request.PlayerId == Guid.Empty || request.ChampionId == Guid.Empty)
+                return BadRequest(new { message = "PlayerId and ChampionId must be provided." });
+
+            var success = await _playerSlaveService.MakeChampionAsync(request.ChampionId, request.PlayerId);
+
+            return success
+                ? Ok(new { message = "Champion title assigned successfully." })
+                : BadRequest(new { message = "Slave not found or already a champion." });
         }
     }
 }

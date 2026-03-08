@@ -133,6 +133,15 @@ namespace Gladiators.Business.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to LudusChampion )\nЗа что: Прихоть господина\nЧто даёт: +{1}% ко всем характеристикам и иммунитет к смерти.
+        /// </summary>
+        internal static string LudusChampion {
+            get {
+                return ResourceManager.GetString("LudusChampion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Patient Striker (Ур. {0})\nЗа что: Не использовал криты весь бой\nЧто даёт: +{1}% к HP .+{2}% к урону и +{3}% к антикриту.
         /// </summary>
         internal static string PatientStriker {

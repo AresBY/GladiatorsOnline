@@ -22,5 +22,8 @@
         public int AntiCritical { get; set; }
         public int HP { get; set; }
         public int HPMax { get; set; }
+
+
+        public int RemainingStatBoosts { get; set; }
     }
 }

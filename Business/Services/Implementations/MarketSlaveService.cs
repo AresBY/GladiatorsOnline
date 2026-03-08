@@ -53,6 +53,7 @@ namespace Gladiators.Business.Services.Implementations
                 .ToEntity<PlayersSlave>();
 
             playersSlave.OwnerId = marketSlave.PlayerId;
+            playersSlave.RemainingStatBoosts = 3;
 
             await _marketRepo.DeleteAsync(marketSlave);
 

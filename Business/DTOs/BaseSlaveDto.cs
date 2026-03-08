@@ -11,11 +11,13 @@
         public int Stamina { get; set; }
         public int Weight { get; set; }
         public int Wins { get; set; }
+
     }
 
     public class PlayersSlaveDto : BaseSlaveDto
     {
         public Guid? OwnerId { get; set; }
+        public int RemainingStatBoosts { get; set; }
         public ICollection<AchievementDto> Achievements { get; set; } = new List<AchievementDto>();
     }
 

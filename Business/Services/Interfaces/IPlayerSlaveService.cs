@@ -6,11 +6,12 @@ namespace Gladiators.Business.Services.Interfaces
 {
     public interface IPlayerSlaveService
     {
-        Task DeleteAsync(Guid slaveId);
+        Task<bool> DeleteAsync(Guid slaveId);
         Task<IEnumerable<PlayersSlaveDto>> GetAllAsync(Guid playerId);
         Task<PlayersSlave> GetAsync(Guid id);
         Task<FighterDetailDto> GetDetailAsync(Guid id);
         Task UpdateAsync(PlayersSlave slave);
         Task AddStatsAsync(Guid playerSlaveId, StatType statType, int amount);
+        Task<bool> MakeChampionAsync(Guid playerSlaveId, Guid playerId);
     }
 }

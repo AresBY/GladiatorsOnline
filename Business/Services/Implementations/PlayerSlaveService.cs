@@ -23,14 +23,16 @@ namespace Gladiators.Business.Services.Implementations
         }
 
         // Удаление
-        public async Task DeleteAsync(Guid slaveId)
+        public async Task<bool> DeleteAsync(Guid id)
         {
-            var slave = await _playerSlaveRepo.GetAsync(slaveId);
-            if (slave == null)
-            {
-                throw new ArgumentNullException(nameof(slave));
-            }
-            await _playerSlaveRepo.DeleteAsync(slave);
+            var slave = await GetAsync(id);
+            if (slave == null) return false;
+
+            var isChampion = slave.Achievements?.Any(a => a.Type == AchievementType.LudusChampion) ?? false;
+            if (isChampion) return false;
+
+            var result = await _playerSlaveRepo.DeleteAsync(slave);
+            return result == 1;
         }
 
         // Получить всех рабов игрока
@@ -67,6 +69,10 @@ namespace Gladiators.Business.Services.Implementations
             if (slave == null)
                 throw new ArgumentNullException(nameof(slave));
 
+            var playerSlave = await GetAsync(slave.Id);
+
+            slave.RemainingStatBoosts = playerSlave.RemainingStatBoosts;// не доверяем клиенту, берем с БД
+
             await _playerSlaveRepo.UpdateAsync(slave);
         }
         public async Task AddStatsAsync(Guid playerSlaveId, StatType statType, int amount)
@@ -76,22 +82,29 @@ namespace Gladiators.Business.Services.Implementations
             if (slave == null)
                 throw new Exception($"Раб с Id {playerSlaveId} не найден");
 
+            if (slave.RemainingStatBoosts == 0)
+                throw new Exception($"Раб с Id {playerSlaveId} не имеет больше возможности увеличения статов");
+
             switch (statType)
             {
                 case StatType.Strength:
                     slave.Strength += amount;
+                    slave.RemainingStatBoosts -= 1;
                     break;
 
                 case StatType.Dexterity:
                     slave.Dexterity += amount;
+                    slave.RemainingStatBoosts -= 1;
                     break;
 
                 case StatType.Intuition:
                     slave.Intuition += amount;
+                    slave.RemainingStatBoosts -= 1;
                     break;
 
                 case StatType.Stamina:
                     slave.Stamina += amount;
+                    slave.RemainingStatBoosts -= 1;
                     break;
 
                 default:
@@ -101,6 +114,27 @@ namespace Gladiators.Business.Services.Implementations
             await _playerSlaveRepo.UpdateAsync(slave);
 
             await _achievementService.UpdateStatsAchivsAsync(playerSlaveId);
+        }
+
+        public async Task<bool> MakeChampionAsync(Guid playerSlaveId, Guid playerId)
+        {
+            var slave = await GetAsync(playerSlaveId);
+            if (slave == null) return false;
+
+            var isAlreadyChampion = slave.Achievements?.Any(a => a.Type == AchievementType.LudusChampion) ?? false;
+            if (isAlreadyChampion) return false;
+
+            var achievement = new Achievement
+            {
+                Id = Guid.NewGuid(),
+                PlayerSlaveId = playerSlaveId,
+                Level = 1,
+                Type = AchievementType.LudusChampion
+            };
+
+            await _achievementService.AddAsync(achievement);
+
+            return true;
         }
     }
 }

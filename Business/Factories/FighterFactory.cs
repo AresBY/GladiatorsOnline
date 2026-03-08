@@ -103,6 +103,15 @@ namespace Gladiators.Business.Factories
                     case AchievementType.StaminaBonus:
                         fighter.HPMax += (int)Math.Round(fighter.HPMax * 0.15 * level);
                         break;
+                    case AchievementType.LudusChampion:
+                        fighter.Damage += (int)Math.Round(fighter.Damage * 0.03);
+                        fighter.Dodge += (int)Math.Round(fighter.Dodge * 0.03);
+                        fighter.AntiDodge += (int)Math.Round(fighter.AntiDodge * 0.03);
+                        fighter.Critical += (int)Math.Round(fighter.Critical * 0.03);
+                        fighter.AntiCritical += (int)Math.Round(fighter.AntiCritical * 0.03);
+                        fighter.CriticalPower += (int)Math.Round(fighter.CriticalPower * 0.03);
+                        fighter.HPMax += (int)Math.Round(fighter.HPMax * 0.03);
+                        break;
                 }
             }
             return fighter;

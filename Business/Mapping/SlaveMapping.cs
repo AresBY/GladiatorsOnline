@@ -26,6 +26,7 @@ namespace Gladiators.Business.Mapping
             {
                 case PlayersSlave ps when dto is PlayersSlaveDto psDto:
                     psDto.OwnerId = ps.OwnerId;
+                    psDto.RemainingStatBoosts = ps.RemainingStatBoosts;
                     psDto.Achievements = ps.Achievements
                         .Select(a => new AchievementDto
                         {
@@ -67,6 +68,7 @@ namespace Gladiators.Business.Mapping
             {
                 case PlayersSlave ps when dto is PlayersSlaveDto psDto:
                     ps.OwnerId = psDto.OwnerId;
+                    //ps.RemainingStatBoosts = psDto.RemainingStatBoosts; не доверяем клиенту, берем с БД
                     break;
                 case MarketSlave ms when dto is MarketSlaveDto msDto:
                     ms.PlayerId = msDto.PlayerId;
@@ -89,6 +91,7 @@ namespace Gladiators.Business.Mapping
                 Intuition = slave.Intuition,
                 Stamina = slave.Stamina,
                 Weight = slave.Weight,
+                RemainingStatBoosts = slave.RemainingStatBoosts,
                 Wins = slave.Wins,
 
                 Achievements = slave.Achievements

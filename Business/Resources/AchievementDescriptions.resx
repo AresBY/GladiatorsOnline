@@ -141,6 +141,9 @@
   <data name="LastSurvivor" xml:space="preserve">
     <value>Last Survivor (Ур. {0})\nЗа что: Выжил с HP &lt; 20%\nЧто даёт: +{1}% к HP</value>
   </data>
+  <data name="LudusChampion" xml:space="preserve">
+    <value>LudusChampion )\nЗа что: Прихоть господина\nЧто даёт: +{1}% ко всем характеристикам и иммунитет к смерти</value>
+  </data>
   <data name="PatientStriker" xml:space="preserve">
     <value>Patient Striker (Ур. {0})\nЗа что: Не использовал криты весь бой\nЧто даёт: +{1}% к HP .+{2}% к урону и +{3}% к антикриту</value>
   </data>

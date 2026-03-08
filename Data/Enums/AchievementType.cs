@@ -13,6 +13,7 @@
         StrengthBonus,
         DexterityBonus,
         IntuitionBonus,
-        StaminaBonus
+        StaminaBonus,
+        LudusChampion
     }
 }

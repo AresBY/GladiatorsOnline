@@ -46,6 +46,9 @@ public static class AchievementTextHelper
             AchievementType.StaminaBonus =>
                 string.Format(AchievementDescriptions.StaminaBonus, level, level * 15),
 
+            AchievementType.LudusChampion =>
+                string.Format(AchievementDescriptions.LudusChampion, level, level * 3),
+
             _ => string.Empty
         };
     }
