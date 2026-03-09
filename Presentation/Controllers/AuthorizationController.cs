@@ -41,7 +41,7 @@ namespace Gladiators.WebApi.Controllers
         {
             var guid = await _authService.LoginAsync(credentials.Username, credentials.Password);
             if (guid == null)
-                return Unauthorized("Неверный логин или пароль");
+                return Unauthorized("Неверный логин или пароль. Если вы регестрируетесь - игнорируйте сообщение ");
 
             return Ok(new { guid = guid });
         }
