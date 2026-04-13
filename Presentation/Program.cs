@@ -113,6 +113,7 @@ catch (Exception ex)
 }
 
 // ---------- Middleware ----------
+app.UseRouting();
 app.UseCors("AllowUnityWebGL");
 app.UseSwagger();
 app.UseSwaggerUI(c =>
