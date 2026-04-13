@@ -21,7 +21,7 @@ builder.Services.AddCors(options =>
 });
 
 // ---------- Порт для Kestrel ----------
-var port = Environment.GetEnvironmentVariable("PORT") ?? "5179";
+var port = Environment.GetEnvironmentVariable("PORT") ?? "5180";
 builder.WebHost.ConfigureKestrel(options =>
 {
     options.ListenAnyIP(int.Parse(port));
@@ -113,7 +113,6 @@ catch (Exception ex)
 }
 
 // ---------- Middleware ----------
-app.UseRouting();
 app.UseCors("AllowUnityWebGL");
 app.UseSwagger();
 app.UseSwaggerUI(c =>
